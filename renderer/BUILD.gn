@@ -10,5 +10,8 @@ source_set("renderer") {
 
   public_deps = [ "//chrome/renderer" ]
 
-  deps = [ "//brave/components/cosmetic_filters/renderer" ]
+  deps = [
+    "//brave/components/cosmetic_filters/renderer",
+    "//brave/components/brave_wallet/renderer",
+  ]
 }
