@@ -135,9 +135,9 @@ class PermissionLifetimeCombobox : public views::Combobox,
                << (lifetime ? lifetime->InSeconds() : -1);
     // TODO(https://github.com/brave/brave-browser/issues/14126): Set the
     // lifetime for all current requests.
-    // for (auto* request : delegate_->Requests()) {
-    //   request->SetLifetime(lifetime);
-    // }
+    for (auto* request : delegate_->Requests()) {
+      request->SetLifetime(lifetime);
+    }
   }
 
   permissions::PermissionPrompt::Delegate* const delegate_;

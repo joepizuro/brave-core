@@ -1,0 +1,20 @@
+diff --git a/components/permissions/permission_request.h b/components/permissions/permission_request.h
+index 12e9275120983e64d3c4afabb996a333b203a396..87484c712c9c176b4562d96457d37d194f8a1844 100644
+--- a/components/permissions/permission_request.h
++++ b/components/permissions/permission_request.h
+@@ -27,7 +27,6 @@ enum class RequestType;
+ class PermissionRequest {
+  public:
+   PermissionRequest();
+-  virtual ~PermissionRequest() {}
+ 
+   // The type of this request.
+   virtual RequestType GetRequestType() const = 0;
+@@ -93,6 +92,7 @@ class PermissionRequest {
+   // this permission request.
+   virtual ContentSettingsType GetContentSettingsType() const;
+ 
++  BRAVE_PERMISSION_REQUEST_H_
+  private:
+   DISALLOW_COPY_AND_ASSIGN(PermissionRequest);
+ };

@@ -1,0 +1,12 @@
+diff --git a/components/permissions/permission_context_base.h b/components/permissions/permission_context_base.h
+index 7769547d11cb48e080e6acb2d1decd0ca78d7da1..160492049bee26e0ceb8557aa2f9ac4c8b0fe045 100644
+--- a/components/permissions/permission_context_base.h
++++ b/components/permissions/permission_context_base.h
+@@ -168,6 +168,7 @@ class PermissionContextBase : public KeyedService {
+     return content_settings_type_;
+   }
+ 
++  BRAVE_PERMISSION_CONTEXT_BASE_H_
+  private:
+   friend class PermissionContextBaseTests;
+ 
