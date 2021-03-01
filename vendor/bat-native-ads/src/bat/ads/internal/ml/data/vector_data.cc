@@ -13,6 +13,10 @@
 namespace ads {
 namespace ml {
 
+namespace {
+const double kMinimumVectorLength = 1e-7;
+}  // namespace
+
 VectorData::VectorData() : Data(DataType::VECTOR_DATA) {}
 
 VectorData::VectorData(const VectorData& vector_data)
@@ -54,7 +58,7 @@ void VectorData::Normalize() {
       [](const double& lhs, const SparseVectorElement& rhs) -> double {
         return lhs + rhs.second * rhs.second;
       }));
-  if (vector_length > 1e-7) {
+  if (vector_length > kMinimumVectorLength) {
     for (size_t i = 0; i < data_.size(); ++i) {
       data_[i].second /= vector_length;
     }

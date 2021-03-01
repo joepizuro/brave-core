@@ -10,7 +10,6 @@
 #include <vector>
 
 #include "bat/ads/internal/ml/data/text_data.h"
-#include "bat/ads/internal/ml/ml_static_values.h"
 #include "bat/ads/internal/ml/transformation/hash_vectorizer.h"
 #include "third_party/zlib/zlib.h"
 
@@ -18,11 +17,17 @@ namespace ads {
 namespace ml {
 namespace transformation {
 
+namespace {
+const int kMaximumHtmlLengthToClassify = (1 << 20);
+const int kMaximumSubLen = 6;
+const int kDefaultBucketCount = 10000;
+}  // namespace
+
 HashVectorizer::HashVectorizer() {
-  for (int i = 1; i <= kMaxSubLen; ++i) {
+  for (int i = 1; i <= kMaximumSubLen; ++i) {
     substring_sizes_.push_back(i);
   }
-  bucket_count_ = kNumBuckets;
+  bucket_count_ = kDefaultBucketCount;
 }
 
 HashVectorizer::~HashVectorizer() = default;

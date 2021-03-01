@@ -8,7 +8,6 @@
 
 #include "bat/ads/internal/ml/data/text_data.h"
 #include "bat/ads/internal/ml/data/vector_data.h"
-#include "bat/ads/internal/ml/ml_static_values.h"
 #include "bat/ads/internal/ml/transformation/hashed_ngrams.h"
 
 #include "bat/ads/internal/unittest_base.h"
@@ -28,6 +27,7 @@ class BatAdsHashedNGramsTest : public UnitTestBase {
 
 TEST_F(BatAdsHashedNGramsTest, HashingTest) {
   // Arrange
+  const int kDefaultBucketCount = 10000;
   const size_t kExpectedElementCount = 10;
   const std::string kTestString = "tiny";
   const std::unique_ptr<Data> text_data =
@@ -44,7 +44,7 @@ TEST_F(BatAdsHashedNGramsTest, HashingTest) {
 
   // Assert
   // 10000 is the default size
-  ASSERT_EQ(hashed_vect_data->GetDimensionCount(), kNumBuckets);
+  ASSERT_EQ(hashed_vect_data->GetDimensionCount(), kDefaultBucketCount);
 
   // Hashes for [t, i, n, y, ti, in, ny, tin, iny, tiny] -- 10 in total
   EXPECT_EQ(hashed_vect_data->GetRawData().size(), kExpectedElementCount);

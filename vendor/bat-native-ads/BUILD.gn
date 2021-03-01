@@ -489,7 +489,6 @@ source_set("ads") {
     "src/bat/ads/internal/ml/data/vector_data.h",
     "src/bat/ads/internal/ml/data/vector_data_aliases.h",
     "src/bat/ads/internal/ml/ml_aliases.h",
-    "src/bat/ads/internal/ml/ml_static_values.h",
     "src/bat/ads/internal/ml/ml_util.cc",
     "src/bat/ads/internal/ml/ml_util.h",
     "src/bat/ads/internal/ml/model/linear/linear.cc",

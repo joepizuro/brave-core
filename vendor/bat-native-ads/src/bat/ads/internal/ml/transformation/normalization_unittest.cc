@@ -11,7 +11,6 @@
 #include "bat/ads/internal/ml/data/vector_data.h"
 #include "bat/ads/internal/ml/data/vector_data_aliases.h"
 #include "bat/ads/internal/ml/ml_aliases.h"
-#include "bat/ads/internal/ml/ml_static_values.h"
 #include "bat/ads/internal/ml/transformation/hashed_ngrams.h"
 #include "bat/ads/internal/ml/transformation/lowercase.h"
 #include "bat/ads/internal/ml/transformation/normalization.h"
@@ -68,6 +67,7 @@ TEST_F(BatAdsNormalizationTest, NormalizationTest) {
 
 TEST_F(BatAdsNormalizationTest, ChainingTest) {
   // Arrange
+  const int kDefaultBucketCount = 10000;
   const size_t kExpectedElementCount = 10;
   const std::string kTestString = "TINY";
 
@@ -96,7 +96,7 @@ TEST_F(BatAdsNormalizationTest, ChainingTest) {
   VectorData* vect_data = static_cast<VectorData*>(data.get());
 
   // Assert
-  EXPECT_EQ(vect_data->GetDimensionCount(), kNumBuckets);
+  EXPECT_EQ(vect_data->GetDimensionCount(), kDefaultBucketCount);
 
   // Hashes for [t, i, n, y, ti, in, ny, tin, iny, tiny] -- 10 in total
   EXPECT_EQ(vect_data->GetRawData().size(), kExpectedElementCount);
