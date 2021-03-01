@@ -28,18 +28,16 @@ TEST_F(BatAdsLowercaseTest, LowercaseTest) {
   // Arrange
   const std::string kUppercaseStr = "LOWER CASE";
   const std::string kLowercaseStr = "lower case";
-  const std::unique_ptr<data::Data> uppercase_data =
-      std::make_unique<data::TextData>(kUppercaseStr);
+  const std::unique_ptr<Data> uppercase_data =
+      std::make_unique<TextData>(kUppercaseStr);
 
   transformation::Lowercase lowercase;
 
   // Act
-  const std::unique_ptr<data::Data> lowercase_data =
-      lowercase.Apply(uppercase_data);
+  const std::unique_ptr<Data> lowercase_data = lowercase.Apply(uppercase_data);
 
-  ASSERT_EQ(lowercase_data->GetType(), data::DataType::TEXT_DATA);
-  data::TextData* lowercase_text_data =
-      static_cast<data::TextData*>(lowercase_data.get());
+  ASSERT_EQ(lowercase_data->GetType(), DataType::TEXT_DATA);
+  TextData* lowercase_text_data = static_cast<TextData*>(lowercase_data.get());
 
   // Assert
   EXPECT_FALSE(kLowercaseStr.compare(lowercase_text_data->GetText()));

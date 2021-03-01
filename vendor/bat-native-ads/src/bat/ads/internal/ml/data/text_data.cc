@@ -9,7 +9,6 @@
 
 namespace ads {
 namespace ml {
-namespace data {
 
 TextData::TextData() : Data(DataType::TEXT_DATA) {}
 
@@ -31,6 +30,5 @@ std::string TextData::GetText() const {
   return text_;
 }
 
-}  // namespace data
 }  // namespace ml
 }  // namespace ads

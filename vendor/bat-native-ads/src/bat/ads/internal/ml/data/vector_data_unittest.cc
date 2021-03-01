@@ -26,7 +26,7 @@ class BatAdsVectorDataTest : public UnitTestBase {
 TEST_F(BatAdsVectorDataTest, DenseVectorDataInitialization) {
   // Arrange
   const std::vector<double> v_5{1.0, 2.0, 3.0, 4.0, 5.0};
-  const data::VectorData dense_data_vector_5(v_5);
+  const VectorData dense_data_vector_5(v_5);
 
   // Act
 
@@ -37,7 +37,7 @@ TEST_F(BatAdsVectorDataTest, DenseVectorDataInitialization) {
 TEST_F(BatAdsVectorDataTest, SparseVectorDataInitialization) {
   // Arrange
   const std::map<unsigned, double> s_6 = {{0UL, 1.0}, {2UL, 3.0}, {3UL, -2.0}};
-  const data::VectorData sparse_data_vector_6(6, s_6);
+  const VectorData sparse_data_vector_6(6, s_6);
 
   // Act
 
@@ -50,13 +50,13 @@ TEST_F(BatAdsVectorDataTest, DenseDenseProduct) {
   const double kTolerance = 1e-6;
 
   const std::vector<double> v_5{1.0, 2.0, 3.0, 4.0, 5.0};
-  const data::VectorData dense_data_vector_5(v_5);
+  const VectorData dense_data_vector_5(v_5);
 
   const std::vector<double> v_3{1.0, 2.0, 3.0};
-  const data::VectorData dense_data_vector_3(v_3);
+  const VectorData dense_data_vector_3(v_3);
 
   const std::vector<double> v_3_1{1.0, 1.0, 1.0};
-  const data::VectorData dense_data_vector_3_1(v_3_1);
+  const VectorData dense_data_vector_3_1(v_3_1);
 
   // Act
   const double res_3x3 = dense_data_vector_3 * dense_data_vector_3;
@@ -75,11 +75,11 @@ TEST_F(BatAdsVectorDataTest, SparseSparseProduct) {
 
   // Dense equivalent is [1, 0, 2]
   const std::map<unsigned, double> s_3 = {{0UL, 1.0}, {2UL, 2.0}};
-  const data::VectorData sparse_data_vector_3(3, s_3);
+  const VectorData sparse_data_vector_3(3, s_3);
 
   // Dense equivalent is [1, 0, 3, 2, 0]
   const std::map<unsigned, double> s_5 = {{0UL, 1.0}, {2UL, 3.0}, {3UL, -2.0}};
-  const data::VectorData sparse_data_vector_5(5, s_5);
+  const VectorData sparse_data_vector_5(5, s_5);
 
   // Act
   const double res_3x3 = sparse_data_vector_3 * sparse_data_vector_3;  // = 5
@@ -95,18 +95,18 @@ TEST_F(BatAdsVectorDataTest, SparseDenseProduct) {
   const double kTolerance = 1e-6;
 
   const std::vector<double> v_5{1.0, 2.0, 3.0, 4.0, 5.0};
-  const data::VectorData dense_data_vector_5(v_5);
+  const VectorData dense_data_vector_5(v_5);
 
   const std::vector<double> v_3{1.0, 2.0, 3.0};
-  const data::VectorData dense_data_vector_3(v_3);
+  const VectorData dense_data_vector_3(v_3);
 
   // Dense equivalent is [1, 0, 2]
   const std::map<unsigned, double> s_3 = {{0UL, 1.0}, {2UL, 2.0}};
-  const data::VectorData sparse_data_vector_3 = data::VectorData(3, s_3);
+  const VectorData sparse_data_vector_3 = VectorData(3, s_3);
 
   // Dense equivalent is [1, 0, 3, 2, 0]
   const std::map<unsigned, double> s_5 = {{0UL, 1.0}, {2UL, 3.0}, {3UL, -2.0}};
-  const data::VectorData sparse_data_vector_5(5, s_5);
+  const VectorData sparse_data_vector_5(5, s_5);
 
   // Act
   const double mixed_res_3x3_1 =
@@ -128,18 +128,18 @@ TEST_F(BatAdsVectorDataTest, SparseDenseProduct) {
 TEST_F(BatAdsVectorDataTest, NonsenseProduct) {
   // Arrange
   const std::vector<double> v_5{1.0, 2.0, 3.0, 4.0, 5.0};
-  const data::VectorData dense_data_vector_5(v_5);
+  const VectorData dense_data_vector_5(v_5);
 
   const std::vector<double> v_3{1.0, 2.0, 3.0};
-  const data::VectorData dense_data_vector_3(v_3);
+  const VectorData dense_data_vector_3(v_3);
 
   // Dense equivalent is [1, 0, 2]
   const std::map<unsigned, double> s_3 = {{0UL, 1.0}, {2UL, 2.0}};
-  const data::VectorData sparse_data_vector_3(3, s_3);
+  const VectorData sparse_data_vector_3(3, s_3);
 
   // Dense equivalent is [1, 0, 3, 2, 0]
   const std::map<unsigned, double> s_5 = {{0UL, 1.0}, {2UL, 3.0}, {3UL, -2.0}};
-  const data::VectorData sparse_data_vector_5(5, s_5);
+  const VectorData sparse_data_vector_5(5, s_5);
 
   // Act
   const double wrong_dd = dense_data_vector_5 * dense_data_vector_3;

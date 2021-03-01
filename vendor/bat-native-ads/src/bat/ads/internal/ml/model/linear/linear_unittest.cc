@@ -27,18 +27,18 @@ class BatAdsLinearModelTest : public UnitTestBase {
 
 TEST_F(BatAdsLinearModelTest, ThreeClassesPredictionTest) {
   // Arrange
-  const std::map<std::string, data::VectorData> weights = {
-      {"class_1", data::VectorData(std::vector<double>{1.0, 0.0, 0.0})},
-      {"class_2", data::VectorData(std::vector<double>{0.0, 1.0, 0.0})},
-      {"class_3", data::VectorData(std::vector<double>{0.0, 0.0, 1.0})}};
+  const std::map<std::string, VectorData> weights = {
+      {"class_1", VectorData(std::vector<double>{1.0, 0.0, 0.0})},
+      {"class_2", VectorData(std::vector<double>{0.0, 1.0, 0.0})},
+      {"class_3", VectorData(std::vector<double>{0.0, 0.0, 1.0})}};
 
   const std::map<std::string, double> biases = {
       {"class_1", 0.0}, {"class_2", 0.0}, {"class_3", 0.0}};
 
   const model::Linear linear(weights, biases);
-  const data::VectorData class1_data_vector(std::vector<double>{1.0, 0.0, 0.0});
-  const data::VectorData class2_data_vector(std::vector<double>{0.0, 1.0, 0.0});
-  const data::VectorData class3_data_vector(std::vector<double>{0.0, 1.0, 2.0});
+  const VectorData class1_data_vector(std::vector<double>{1.0, 0.0, 0.0});
+  const VectorData class2_data_vector(std::vector<double>{0.0, 1.0, 0.0});
+  const VectorData class3_data_vector(std::vector<double>{0.0, 1.0, 2.0});
 
   // Act
   const PredictionMap res1 = linear.Predict(class1_data_vector);
@@ -58,16 +58,16 @@ TEST_F(BatAdsLinearModelTest, ThreeClassesPredictionTest) {
 
 TEST_F(BatAdsLinearModelTest, BiasesPredictionTest) {
   // Arrange
-  const std::map<std::string, data::VectorData> weights = {
-      {"class_1", data::VectorData(std::vector<double>{1.0, 0.0, 0.0})},
-      {"class_2", data::VectorData(std::vector<double>{0.0, 1.0, 0.0})},
-      {"class_3", data::VectorData(std::vector<double>{0.0, 0.0, 1.0})}};
+  const std::map<std::string, VectorData> weights = {
+      {"class_1", VectorData(std::vector<double>{1.0, 0.0, 0.0})},
+      {"class_2", VectorData(std::vector<double>{0.0, 1.0, 0.0})},
+      {"class_3", VectorData(std::vector<double>{0.0, 0.0, 1.0})}};
 
   const std::map<std::string, double> biases = {
       {"class_1", 0.5}, {"class_2", 0.25}, {"class_3", 1.0}};
 
   const model::Linear linear_biased(weights, biases);
-  const data::VectorData avg_vector(std::vector<double>{1.0, 1.0, 1.0});
+  const VectorData avg_vector(std::vector<double>{1.0, 1.0, 1.0});
 
   // Act
   const PredictionMap res = linear_biased.Predict(avg_vector);
@@ -80,8 +80,8 @@ TEST_F(BatAdsLinearModelTest, BiasesPredictionTest) {
 
 TEST_F(BatAdsLinearModelTest, BinaryClassifierPredictionTest) {
   // Arrange
-  const std::map<std::string, data::VectorData> weights = {
-      {"the_only_class", data::VectorData(std::vector<double>{0.3, 0.2, 0.25})},
+  const std::map<std::string, VectorData> weights = {
+      {"the_only_class", VectorData(std::vector<double>{0.3, 0.2, 0.25})},
   };
 
   const std::map<std::string, double> biases = {
@@ -89,8 +89,8 @@ TEST_F(BatAdsLinearModelTest, BinaryClassifierPredictionTest) {
   };
 
   const model::Linear linear(weights, biases);
-  const data::VectorData data_vector_0(std::vector<double>{1.07, 1.52, 0.91});
-  const data::VectorData data_vector_1(std::vector<double>{1.11, 1.63, 1.21});
+  const VectorData data_vector_0(std::vector<double>{1.07, 1.52, 0.91});
+  const VectorData data_vector_1(std::vector<double>{1.11, 1.63, 1.21});
 
   // Act
   const PredictionMap res_0 = linear.Predict(data_vector_0);
@@ -106,12 +106,12 @@ TEST_F(BatAdsLinearModelTest, BinaryClassifierPredictionTest) {
 
 TEST_F(BatAdsLinearModelTest, TopPredictionsTest) {
   // Arrange
-  const std::map<std::string, data::VectorData> weights = {
-      {"class_1", data::VectorData(std::vector<double>{1.0, 0.5, 0.8})},
-      {"class_2", data::VectorData(std::vector<double>{0.3, 1.0, 0.7})},
-      {"class_3", data::VectorData(std::vector<double>{0.6, 0.9, 1.0})},
-      {"class_4", data::VectorData(std::vector<double>{0.7, 1.0, 0.8})},
-      {"class_5", data::VectorData(std::vector<double>{1.0, 0.2, 1.0})}};
+  const std::map<std::string, VectorData> weights = {
+      {"class_1", VectorData(std::vector<double>{1.0, 0.5, 0.8})},
+      {"class_2", VectorData(std::vector<double>{0.3, 1.0, 0.7})},
+      {"class_3", VectorData(std::vector<double>{0.6, 0.9, 1.0})},
+      {"class_4", VectorData(std::vector<double>{0.7, 1.0, 0.8})},
+      {"class_5", VectorData(std::vector<double>{1.0, 0.2, 1.0})}};
 
   const std::map<std::string, double> biases = {{"class_1", 0.21},
                                                 {"class_2", 0.22},
@@ -120,12 +120,9 @@ TEST_F(BatAdsLinearModelTest, TopPredictionsTest) {
                                                 {"class_5", 0.21}};
 
   const model::Linear linear_biased(weights, biases);
-  const data::VectorData point_1(
-      std::vector<double>{1.0, 0.99, 0.98, 0.97, 0.96});
-  const data::VectorData point_2(
-      std::vector<double>{0.83, 0.79, 0.91, 0.87, 0.82});
-  const data::VectorData point_3(
-      std::vector<double>{0.92, 0.95, 0.85, 0.91, 0.73});
+  const VectorData point_1(std::vector<double>{1.0, 0.99, 0.98, 0.97, 0.96});
+  const VectorData point_2(std::vector<double>{0.83, 0.79, 0.91, 0.87, 0.82});
+  const VectorData point_3(std::vector<double>{0.92, 0.95, 0.85, 0.91, 0.73});
 
   // Act
   const PredictionMap res_1 = linear_biased.TopPredictions(point_1);

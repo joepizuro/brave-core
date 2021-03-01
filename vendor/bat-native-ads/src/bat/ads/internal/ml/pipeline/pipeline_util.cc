@@ -125,7 +125,7 @@ base::Optional<model::Linear> ParseClassifierJSON(
     return base::nullopt;
   }
 
-  std::map<std::string, data::VectorData> weights;
+  std::map<std::string, VectorData> weights;
   for (size_t i = 0; i < classes.size(); i++) {
     base::Value* this_class = class_weights->FindListKey(classes[i]);
     if (!this_class) {
@@ -137,7 +137,7 @@ base::Optional<model::Linear> ParseClassifierJSON(
       const base::Value& weight = this_class_list[j];
       class_coef_weights.push_back(weight.GetDouble());
     }
-    weights[classes[i]] = data::VectorData(class_coef_weights);
+    weights[classes[i]] = VectorData(class_coef_weights);
   }
 
   std::map<std::string, double> specified_biases;

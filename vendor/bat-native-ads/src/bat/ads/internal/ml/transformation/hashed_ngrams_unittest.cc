@@ -30,19 +30,17 @@ TEST_F(BatAdsHashedNGramsTest, HashingTest) {
   // Arrange
   const size_t kExpectedElementCount = 10;
   const std::string kTestString = "tiny";
-  const std::unique_ptr<data::Data> text_data =
-      std::make_unique<data::TextData>(data::TextData(kTestString));
+  const std::unique_ptr<Data> text_data =
+      std::make_unique<TextData>(TextData(kTestString));
 
   transformation::HashedNGrams hashed_ngrams;
 
   // Act
-  const std::unique_ptr<data::Data> hashed_data =
-      hashed_ngrams.Apply(text_data);
+  const std::unique_ptr<Data> hashed_data = hashed_ngrams.Apply(text_data);
 
-  ASSERT_EQ(hashed_data->GetType(), data::DataType::VECTOR_DATA);
+  ASSERT_EQ(hashed_data->GetType(), DataType::VECTOR_DATA);
 
-  data::VectorData* hashed_vect_data =
-      static_cast<data::VectorData*>(hashed_data.get());
+  VectorData* hashed_vect_data = static_cast<VectorData*>(hashed_data.get());
 
   // Assert
   // 10000 is the default size
@@ -56,19 +54,17 @@ TEST_F(BatAdsHashedNGramsTest, CustomHashingTest) {
   // Arrange
   const size_t kExpectedElementCount = 3;
   const std::string kTestString = "tiny";
-  const std::unique_ptr<data::Data> text_data =
-      std::make_unique<data::TextData>(data::TextData(kTestString));
+  const std::unique_ptr<Data> text_data =
+      std::make_unique<TextData>(TextData(kTestString));
 
   transformation::HashedNGrams hashed_ngrams(3, std::vector<int>{1, 2, 3});
 
   // Act
-  const std::unique_ptr<data::Data> hashed_data =
-      hashed_ngrams.Apply(text_data);
+  const std::unique_ptr<Data> hashed_data = hashed_ngrams.Apply(text_data);
 
-  ASSERT_EQ(hashed_data->GetType(), data::DataType::VECTOR_DATA);
+  ASSERT_EQ(hashed_data->GetType(), DataType::VECTOR_DATA);
 
-  data::VectorData* hashed_vect_data =
-      static_cast<data::VectorData*>(hashed_data.get());
+  VectorData* hashed_vect_data = static_cast<VectorData*>(hashed_data.get());
 
   // Assert
   ASSERT_EQ(hashed_vect_data->GetDimensionCount(), 3);

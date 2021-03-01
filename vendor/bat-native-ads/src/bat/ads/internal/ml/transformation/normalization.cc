@@ -20,19 +20,18 @@ Normalization::Normalization()
 
 Normalization::~Normalization() = default;
 
-std::unique_ptr<data::Data> Normalization::Apply(
-    const std::unique_ptr<data::Data>& input_data) {
-  if (input_data->GetType() != data::DataType::VECTOR_DATA) {
-    return std::make_unique<data::VectorData>(
-        data::VectorData(0, std::map<unsigned, double>()));
+std::unique_ptr<Data> Normalization::Apply(
+    const std::unique_ptr<Data>& input_data) {
+  if (input_data->GetType() != DataType::VECTOR_DATA) {
+    return std::make_unique<VectorData>(
+        VectorData(0, std::map<unsigned, double>()));
   }
 
-  data::VectorData* vector_data =
-      static_cast<data::VectorData*>(input_data.get());
+  VectorData* vector_data = static_cast<VectorData*>(input_data.get());
 
-  data::VectorData vector_data_copy = *vector_data;
+  VectorData vector_data_copy = *vector_data;
   vector_data_copy.Normalize();
-  return std::make_unique<data::VectorData>(vector_data_copy);
+  return std::make_unique<VectorData>(vector_data_copy);
 }
 
 }  // namespace transformation

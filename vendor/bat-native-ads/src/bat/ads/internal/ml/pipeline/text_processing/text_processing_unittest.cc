@@ -58,10 +58,10 @@ TEST_F(BatAdsTextProcessingPipelineTest, BuildSimplePipeline) {
   transformations.push_back(
       std::make_unique<transformation::HashedNGrams>(hashed_ngrams));
 
-  std::map<std::string, data::VectorData> weights = {
-      {"class_1", data::VectorData(std::vector<double>{1.0, 2.0, 3.0})},
-      {"class_2", data::VectorData(std::vector<double>{3.0, 2.0, 1.0})},
-      {"class_3", data::VectorData(std::vector<double>{2.0, 2.0, 2.0})}};
+  std::map<std::string, VectorData> weights = {
+      {"class_1", VectorData(std::vector<double>{1.0, 2.0, 3.0})},
+      {"class_2", VectorData(std::vector<double>{3.0, 2.0, 1.0})},
+      {"class_3", VectorData(std::vector<double>{2.0, 2.0, 2.0})}};
 
   std::map<std::string, double> biases = {
       {"class_1", 0.0}, {"class_2", 0.0}, {"class_3", 0.0}};
@@ -70,7 +70,7 @@ TEST_F(BatAdsTextProcessingPipelineTest, BuildSimplePipeline) {
   pipeline::TextProcessing pipeline =
       pipeline::TextProcessing(transformations, linear_model);
 
-  data::VectorData data_point_3(std::vector<double>{1.0, 0.0, 0.0});
+  VectorData data_point_3(std::vector<double>{1.0, 0.0, 0.0});
 
   // Act
   PredictionMap data_point_3_res = linear_model.Predict(data_point_3);
@@ -105,8 +105,8 @@ TEST_F(BatAdsTextProcessingPipelineTest, TestLoadFromJson) {
 
   std::vector<PredictionMap> prediction_maps(train_texts.size());
   for (size_t i = 0; i < train_texts.size(); i++) {
-    std::unique_ptr<data::Data> text_data =
-        std::make_unique<data::TextData>(data::TextData(train_texts[i]));
+    std::unique_ptr<Data> text_data =
+        std::make_unique<TextData>(TextData(train_texts[i]));
     PredictionMap prediction_map = pipeline.Apply(text_data);
     prediction_maps[i] = prediction_map;
   }

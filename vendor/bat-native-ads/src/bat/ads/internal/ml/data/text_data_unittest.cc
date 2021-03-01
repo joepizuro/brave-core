@@ -24,7 +24,7 @@ class BatAdsTextDataTest : public UnitTestBase {
 TEST_F(BatAdsTextDataTest, TextDataInitialization) {
   // Arrange
   const std::string expected_text = "expected text";
-  const data::TextData text_data(expected_text);
+  const TextData text_data(expected_text);
 
   // Act
   const std::string text = text_data.GetText();

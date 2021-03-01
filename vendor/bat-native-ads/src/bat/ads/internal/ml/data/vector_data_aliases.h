@@ -11,11 +11,9 @@
 
 namespace ads {
 namespace ml {
-namespace data {
 
 using SparseVectorElement = std::pair<uint32_t, double>;
 
-}  // namespace data
 }  // namespace ml
 }  // namespace ads
 

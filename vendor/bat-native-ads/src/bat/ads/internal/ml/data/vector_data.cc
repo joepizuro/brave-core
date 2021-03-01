@@ -11,7 +11,6 @@
 
 namespace ads {
 namespace ml {
-namespace data {
 
 VectorData::VectorData() : Data(DataType::VECTOR_DATA) {}
 
@@ -98,6 +97,5 @@ double operator*(const VectorData& lhs, const VectorData& rhs) {
   return dot_product;
 }
 
-}  // namespace data
 }  // namespace ml
 }  // namespace ads

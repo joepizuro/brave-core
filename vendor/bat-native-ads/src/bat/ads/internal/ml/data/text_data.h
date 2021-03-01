@@ -12,7 +12,6 @@
 
 namespace ads {
 namespace ml {
-namespace data {
 
 class TextData : public Data {
  public:
@@ -32,7 +31,6 @@ class TextData : public Data {
   std::string text_;
 };
 
-}  // namespace data
 }  // namespace ml
 }  // namespace ads
 

@@ -36,9 +36,8 @@ TEST_F(BatAdsNormalizationTest, NormalizationTest) {
   const double kTolerance = 1e-7;
 
   std::string kTestString = "quite a small test string";
-  data::TextData text_data(kTestString);
-  std::unique_ptr<data::Data> data =
-      std::make_unique<data::TextData>(text_data);
+  TextData text_data(kTestString);
+  std::unique_ptr<Data> data = std::make_unique<TextData>(text_data);
 
   transformation::HashedNGrams hashed_ngrams(10, std::vector<int>{3, 4});
   transformation::Normalization normalization;
@@ -48,13 +47,13 @@ TEST_F(BatAdsNormalizationTest, NormalizationTest) {
 
   data = normalization.Apply(data);
 
-  ASSERT_EQ(data->GetType(), data::DataType::VECTOR_DATA);
+  ASSERT_EQ(data->GetType(), DataType::VECTOR_DATA);
 
-  data::VectorData* norm_data = static_cast<data::VectorData*>(data.release());
+  VectorData* norm_data = static_cast<VectorData*>(data.release());
 
   std::vector<double> components;
   double s = 0.0;
-  for (data::SparseVectorElement const& x : norm_data->GetRawData()) {
+  for (SparseVectorElement const& x : norm_data->GetRawData()) {
     components.push_back(x.second);
     s += x.second * x.second;
   }
@@ -85,17 +84,16 @@ TEST_F(BatAdsNormalizationTest, ChainingTest) {
   chain.push_back(
       std::make_unique<transformation::Normalization>(normalization));
 
-  data::TextData text_data(kTestString);
-  std::unique_ptr<data::Data> data =
-      std::make_unique<data::TextData>(text_data);
+  TextData text_data(kTestString);
+  std::unique_ptr<Data> data = std::make_unique<TextData>(text_data);
 
   // Act
   for (size_t i = 0; i < chain.size(); ++i) {
     data = chain[i]->Apply(data);
   }
 
-  ASSERT_EQ(data->GetType(), data::DataType::VECTOR_DATA);
-  data::VectorData* vect_data = static_cast<data::VectorData*>(data.get());
+  ASSERT_EQ(data->GetType(), DataType::VECTOR_DATA);
+  VectorData* vect_data = static_cast<VectorData*>(data.get());
 
   // Assert
   EXPECT_EQ(vect_data->GetDimensionCount(), kNumBuckets);

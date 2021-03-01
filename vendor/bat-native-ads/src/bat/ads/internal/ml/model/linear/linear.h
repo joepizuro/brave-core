@@ -24,18 +24,18 @@ class Linear {
 
   explicit Linear(const std::string& model);
 
-  Linear(const std::map<std::string, data::VectorData>& weights,
+  Linear(const std::map<std::string, VectorData>& weights,
          const std::map<std::string, double>& biases);
 
   ~Linear();
 
-  PredictionMap Predict(const data::VectorData& x) const;
+  PredictionMap Predict(const VectorData& x) const;
 
-  PredictionMap TopPredictions(const data::VectorData& x,
+  PredictionMap TopPredictions(const VectorData& x,
                                const int top_count = -1) const;
 
  private:
-  std::map<std::string, data::VectorData> weights_;
+  std::map<std::string, VectorData> weights_;
   std::map<std::string, double> biases_;
 };
 

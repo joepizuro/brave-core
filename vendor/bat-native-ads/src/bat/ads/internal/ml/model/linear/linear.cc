@@ -20,7 +20,7 @@ namespace model {
 
 Linear::Linear() {}
 
-Linear::Linear(const std::map<std::string, data::VectorData>& weights,
+Linear::Linear(const std::map<std::string, VectorData>& weights,
                const std::map<std::string, double>& biases) {
   weights_ = weights;
   biases_ = biases;
@@ -30,7 +30,7 @@ Linear::Linear(const Linear& linear_model) = default;
 
 Linear::~Linear() = default;
 
-PredictionMap Linear::Predict(const data::VectorData& x) const {
+PredictionMap Linear::Predict(const VectorData& x) const {
   PredictionMap predictions;
   for (const auto& kv : weights_) {
     double prediction = kv.second * x;
@@ -43,7 +43,7 @@ PredictionMap Linear::Predict(const data::VectorData& x) const {
   return predictions;
 }
 
-PredictionMap Linear::TopPredictions(const data::VectorData& x,
+PredictionMap Linear::TopPredictions(const VectorData& x,
                                      const int top_count) const {
   PredictionMap pred_map = Predict(x);
   PredictionMap pred_map_softmax = Softmax(pred_map);

@@ -15,7 +15,6 @@
 
 namespace ads {
 namespace ml {
-namespace data {
 
 class VectorData : public Data {
  public:
@@ -44,7 +43,6 @@ class VectorData : public Data {
   std::vector<SparseVectorElement> data_;
 };
 
-}  // namespace data
 }  // namespace ml
 }  // namespace ads
 

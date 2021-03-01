@@ -49,7 +49,7 @@ class TextProcessing {
 
   bool FromJson(const std::string& json);
 
-  PredictionMap Apply(const std::unique_ptr<data::Data>& input_data);
+  PredictionMap Apply(const std::unique_ptr<Data>& input_data);
 
   const PredictionMap GetTopPredictions(const std::string& content);
 

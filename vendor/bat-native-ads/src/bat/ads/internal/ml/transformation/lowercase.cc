@@ -19,17 +19,17 @@ Lowercase::Lowercase() : Transformation(TransformationType::LOWERCASE) {}
 
 Lowercase::~Lowercase() = default;
 
-std::unique_ptr<data::Data> Lowercase::Apply(
-    const std::unique_ptr<data::Data>& input_data) {
-  if (input_data->GetType() != data::DataType::TEXT_DATA) {
-    return std::make_unique<data::Data>(data::TextData(""));
+std::unique_ptr<Data> Lowercase::Apply(
+    const std::unique_ptr<Data>& input_data) {
+  if (input_data->GetType() != DataType::TEXT_DATA) {
+    return std::make_unique<Data>(TextData(""));
   }
 
-  data::TextData* text_data = static_cast<data::TextData*>(input_data.get());
+  TextData* text_data = static_cast<TextData*>(input_data.get());
 
   std::string lowercase_text = base::ToLowerASCII(text_data->GetText());
 
-  return std::make_unique<data::TextData>(data::TextData(lowercase_text));
+  return std::make_unique<TextData>(TextData(lowercase_text));
 }
 
 }  // namespace transformation

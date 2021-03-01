@@ -7,7 +7,6 @@
 
 namespace ads {
 namespace ml {
-namespace data {
 
 Data::Data(const DataType& type) : type_(type) {}
 
@@ -17,6 +16,5 @@ DataType Data::GetType() const {
   return type_;
 }
 
-}  // namespace data
 }  // namespace ml
 }  // namespace ads

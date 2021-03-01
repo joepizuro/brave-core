@@ -36,21 +36,19 @@ HashedNGrams::HashedNGrams(int bucket_count, const std::vector<int>& subgrams)
       std::make_unique<HashVectorizer>(HashVectorizer(bucket_count, subgrams));
 }
 
-std::unique_ptr<data::Data> HashedNGrams::Apply(
-    const std::unique_ptr<data::Data>& input_data) {
-  if (input_data->GetType() != data::DataType::TEXT_DATA) {
-    return std::make_unique<data::Data>(
-        data::VectorData(0, std::map<unsigned, double>()));
+std::unique_ptr<Data> HashedNGrams::Apply(
+    const std::unique_ptr<Data>& input_data) {
+  if (input_data->GetType() != DataType::TEXT_DATA) {
+    return std::make_unique<Data>(VectorData(0, std::map<unsigned, double>()));
   }
 
-  data::TextData* text_data = static_cast<data::TextData*>(input_data.get());
+  TextData* text_data = static_cast<TextData*>(input_data.get());
 
   std::map<unsigned, double> frequences =
       hash_vectorizer->GetFrequencies(text_data->GetText());
   int dimension_count = hash_vectorizer->GetBucketCount();
 
-  return std::make_unique<data::VectorData>(
-      data::VectorData(dimension_count, frequences));
+  return std::make_unique<VectorData>(VectorData(dimension_count, frequences));
 }
 
 }  // namespace transformation

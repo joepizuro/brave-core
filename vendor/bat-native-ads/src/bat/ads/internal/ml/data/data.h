@@ -8,7 +8,6 @@
 
 namespace ads {
 namespace ml {
-namespace data {
 
 enum class DataType { TEXT_DATA = 0, VECTOR_DATA = 1 };
 
@@ -24,7 +23,6 @@ class Data {
   const DataType type_;
 };
 
-}  // namespace data
 }  // namespace ml
 }  // namespace ads
 

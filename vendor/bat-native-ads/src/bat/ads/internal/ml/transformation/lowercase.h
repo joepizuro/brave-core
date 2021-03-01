@@ -21,8 +21,7 @@ class Lowercase : public Transformation {
 
   ~Lowercase() override;
 
-  std::unique_ptr<data::Data> Apply(
-      const std::unique_ptr<data::Data>& input_data) override;
+  std::unique_ptr<Data> Apply(const std::unique_ptr<Data>& input_data) override;
 };
 
 }  // namespace transformation
