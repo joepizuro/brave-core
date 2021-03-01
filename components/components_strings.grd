@@ -35,6 +35,9 @@
       <output filename="components_strings_zh-HK.pak" type="data_package" lang="zh-HK" />
       <output filename="components_strings_zu.pak" type="data_package" lang="zu" />
     </if>
+    <if expr="chromeos or lacros">
+      <output filename="components_strings_is.pak" type="data_package" lang="is" />
+    </if>
     <output filename="components_strings_am.pak" type="data_package" lang="am" />
     <output filename="components_strings_ar.pak" type="data_package" lang="ar" />
     <output filename="components_strings_bg.pak" type="data_package" lang="bg" />
@@ -315,6 +318,7 @@
       <part file="security_state_strings.grdp" />
       <part file="send_tab_to_self_strings.grdp" />
       <part file="sms_strings.grdp" />
+      <part file="soda_strings.grdp" />
       <part file="ssl_errors_strings.grdp" />
       <part file="subresource_filter_strings.grdp" />
       <part file="sync_ui_strings.grdp" />
