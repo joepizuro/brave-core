@@ -5,6 +5,7 @@
 
 #include <limits>
 #include <map>
+#include <numeric>
 #include <vector>
 
 #include "bat/ads/internal/ml/data/vector_data.h"
@@ -48,11 +49,11 @@ VectorData::VectorData(const std::vector<double>& data)
 }
 
 void VectorData::Normalize() {
-  double vector_length = 0.0;
-  for (size_t i = 0; i < data_.size(); ++i) {
-    vector_length += data_[i].second * data_[i].second;
-  }
-  vector_length = sqrt(vector_length);
+  const double vector_length = sqrt(std::accumulate(
+      data_.begin(), data_.end(), 0.0,
+      [](const double& lhs, const SparseVectorElement& rhs) -> double {
+        return lhs + rhs.second * rhs.second;
+      }));
   if (vector_length > 1e-7) {
     for (size_t i = 0; i < data_.size(); ++i) {
       data_[i].second /= vector_length;
