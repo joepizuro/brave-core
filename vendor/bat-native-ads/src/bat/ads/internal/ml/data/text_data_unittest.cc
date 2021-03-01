@@ -3,9 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "bat/ads/internal/ml/data/text_data.h"
 #include <string>
 
+#include "bat/ads/internal/ml/data/text_data.h"
 #include "bat/ads/internal/unittest_base.h"
 #include "bat/ads/internal/unittest_util.h"
 
@@ -23,14 +23,14 @@ class BatAdsTextDataTest : public UnitTestBase {
 
 TEST_F(BatAdsTextDataTest, TextDataInitialization) {
   // Arrange
-  std::string original_text = "original text";
-  data::TextData text_data(original_text);
+  const std::string expected_text = "expected text";
+  const data::TextData text_data(expected_text);
 
   // Act
-  std::string extracted_text = text_data.GetText();
+  const std::string text = text_data.GetText();
 
   // Assert
-  EXPECT_EQ(extracted_text, original_text);
+  EXPECT_EQ(text, expected_text);
 }
 
 }  // namespace ml

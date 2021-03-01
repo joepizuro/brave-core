@@ -29,23 +29,23 @@ TEST_F(BatAdsMLToolsUtilTest, SoftmaxTest) {
   // Arrange
   const double kTolerance = 1e-8;
 
-  std::map<std::string, double> group_1 = {
+  const std::map<std::string, double> group_1 = {
       {"c1", -1.0}, {"c2", 2.0}, {"c3", 3.0}};
 
   // Act
-  PredictionMap sm = Softmax(group_1);
+  const PredictionMap predictions = Softmax(group_1);
 
   double sum = 0.0;
-  for (auto const& x : sm) {
-    sum += x.second;
+  for (auto const& prediction : predictions) {
+    sum += prediction.second;
   }
 
   // Assert
-  ASSERT_TRUE(sm["c3"] > sm["c1"]);
-  ASSERT_TRUE(sm["c3"] > sm["c2"]);
-  ASSERT_TRUE(sm["c2"] > sm["c1"]);
-  ASSERT_TRUE(sm["c1"] > 0.0);
-  ASSERT_TRUE(sm["c3"] < 1.0);
+  ASSERT_TRUE(predictions.at("c3") > predictions.at("c1"));
+  ASSERT_TRUE(predictions.at("c3") > predictions.at("c2"));
+  ASSERT_TRUE(predictions.at("c2") > predictions.at("c1"));
+  ASSERT_TRUE(predictions.at("c1") > 0.0);
+  ASSERT_TRUE(predictions.at("c3") < 1.0);
   EXPECT_TRUE(sum - 1.0 < kTolerance);
 }
 
@@ -53,37 +53,41 @@ TEST_F(BatAdsMLToolsUtilTest, ExtendedSoftmaxTest) {
   // Arrange
   const double kTolerance = 1e-8;
 
-  std::map<std::string, double> group_1 = {
+  const std::map<std::string, double> group_1 = {
       {"c1", 0.0}, {"c2", 1.0}, {"c3", 2.0}};
 
-  std::map<std::string, double> group_2 = {
+  const std::map<std::string, double> group_2 = {
       {"c1", 3.0}, {"c2", 4.0}, {"c3", 5.0}};
 
   // Act
-  PredictionMap sm_1 = Softmax(group_1);
-  PredictionMap sm_2 = Softmax(group_2);
+  const PredictionMap predictions_1 = Softmax(group_1);
+  const PredictionMap predictions_2 = Softmax(group_2);
 
   // Assert
-  ASSERT_TRUE(std::fabs(sm_1["c1"] - sm_2["c1"]) < kTolerance);
-  ASSERT_TRUE(std::fabs(sm_1["c2"] - sm_2["c2"]) < kTolerance);
-  ASSERT_TRUE(std::fabs(sm_1["c3"] - sm_2["c3"]) < kTolerance);
+  ASSERT_TRUE(std::fabs(predictions_1.at("c1") - predictions_2.at("c1")) <
+              kTolerance);
+  ASSERT_TRUE(std::fabs(predictions_1.at("c2") - predictions_2.at("c2")) <
+              kTolerance);
+  ASSERT_TRUE(std::fabs(predictions_1.at("c3") - predictions_2.at("c3")) <
+              kTolerance);
 
-  EXPECT_TRUE(std::fabs(sm_1["c1"] - 0.09003057) < kTolerance &&
-              std::fabs(sm_1["c2"] - 0.24472847) < kTolerance &&
-              std::fabs(sm_1["c3"] - 0.66524095) < kTolerance);
+  EXPECT_TRUE(std::fabs(predictions_1.at("c1") - 0.09003057) < kTolerance &&
+              std::fabs(predictions_1.at("c2") - 0.24472847) < kTolerance &&
+              std::fabs(predictions_1.at("c3") - 0.66524095) < kTolerance);
 }
 
 TEST_F(BatAdsMLToolsUtilTest, TransformationCopyTest) {
   // Arrange
   transformation::Normalization normalization;
-  TransformationPtr t_ptr =
+  TransformationPtr transformation_ptr =
       std::make_unique<transformation::Normalization>(normalization);
 
   // Act
-  TransformationPtr t_ptr_copy = GetTransformationCopy(t_ptr);
+  TransformationPtr transformation_ptr_copy =
+      GetTransformationCopy(transformation_ptr);
 
   // Assert
-  EXPECT_EQ(t_ptr_copy->GetType(),
+  EXPECT_EQ(transformation_ptr_copy->GetType(),
             transformation::TransformationType::NORMALIZATION);
 }
 
@@ -91,23 +95,24 @@ TEST_F(BatAdsMLToolsUtilTest, TransformationVectorCopyTest) {
   // Arrange
   const size_t kVectorSize = 2;
 
-  TransformationVector tr_vect;
+  TransformationVector transformation_vector;
   transformation::HashedNGrams hashed_ngrams;
-  tr_vect.push_back(
+  transformation_vector.push_back(
       std::make_unique<transformation::HashedNGrams>(hashed_ngrams));
 
   transformation::Normalization normalization;
-  tr_vect.push_back(
+  transformation_vector.push_back(
       std::make_unique<transformation::Normalization>(normalization));
 
   // Act
-  TransformationVector tr_vect_copy = GetTransformationVectorCopy(tr_vect);
+  TransformationVector transformation_vector_copy =
+      GetTransformationVectorCopy(transformation_vector);
 
   // Assert
-  ASSERT_EQ(tr_vect_copy.size(), kVectorSize);
-  EXPECT_TRUE(tr_vect_copy[0]->GetType() ==
+  ASSERT_EQ(transformation_vector_copy.size(), kVectorSize);
+  EXPECT_TRUE(transformation_vector_copy[0]->GetType() ==
                   transformation::TransformationType::HASHED_NGRAMS &&
-              tr_vect_copy[1]->GetType() ==
+              transformation_vector_copy[1]->GetType() ==
                   transformation::TransformationType::NORMALIZATION);
 }
 

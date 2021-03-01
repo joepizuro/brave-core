@@ -6,9 +6,8 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ML_DATA_VECTOR_DATA_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ML_DATA_VECTOR_DATA_H_
 
+#include <stdint.h>
 #include <map>
-#include <string>
-#include <utility>
 #include <vector>
 
 #include "bat/ads/internal/ml/data/data.h"
@@ -28,11 +27,11 @@ class VectorData : public Data {
 
   VectorData& operator=(const VectorData& vector_data);
 
-  VectorData(int dimension_count, const std::map<unsigned, double>& data);
+  VectorData(const int dimension_count, const std::map<uint32_t, double>& data);
 
   ~VectorData() override;
 
-  friend double operator*(const VectorData& a, const VectorData& b);
+  friend double operator*(const VectorData& lhs, const VectorData& rhs);
 
   void Normalize();
 

@@ -5,7 +5,6 @@
 
 #include <limits>
 #include <map>
-#include <stdexcept>
 #include <vector>
 
 #include "bat/ads/internal/ml/data/vector_data.h"
@@ -30,13 +29,13 @@ VectorData& VectorData::operator=(const VectorData& vector_data) {
 
 VectorData::~VectorData() = default;
 
-VectorData::VectorData(int dimension_count,
-                       const std::map<unsigned, double>& data)
+VectorData::VectorData(const int dimension_count,
+                       const std::map<uint32_t, double>& data)
     : Data(DataType::VECTOR_DATA) {
   dimension_count_ = dimension_count;
   data_.reserve(dimension_count_);
-  for (auto data_it = data.begin(); data_it != data.end(); data_it++) {
-    data_.push_back(SparseVectorElement(data_it->first, data_it->second));
+  for (auto iter = data.begin(); iter != data.end(); iter++) {
+    data_.push_back(SparseVectorElement(iter->first, iter->second));
   }
 }
 
@@ -45,7 +44,7 @@ VectorData::VectorData(const std::vector<double>& data)
   dimension_count_ = static_cast<int>(data.size());
   data_.resize(dimension_count_);
   for (int i = 0; i < dimension_count_; ++i) {
-    data_[i] = SparseVectorElement(static_cast<unsigned>(i), data[i]);
+    data_[i] = SparseVectorElement(static_cast<uint32_t>(i), data[i]);
   }
 }
 
@@ -70,28 +69,28 @@ std::vector<SparseVectorElement> VectorData::GetRawData() const {
   return data_;
 }
 
-double operator*(const VectorData& a, const VectorData& b) {
-  if (!a.dimension_count_ || !b.dimension_count_) {
+double operator*(const VectorData& lhs, const VectorData& rhs) {
+  if (!lhs.dimension_count_ || !rhs.dimension_count_) {
     return std::numeric_limits<double>::quiet_NaN();
   }
 
-  if (a.dimension_count_ != b.dimension_count_) {
+  if (lhs.dimension_count_ != rhs.dimension_count_) {
     return std::numeric_limits<double>::quiet_NaN();
   }
 
   double dot_product = 0.0;
-  size_t a_ind = 0;
-  size_t b_ind = 0;
-  while (a_ind < a.data_.size() && b_ind < b.data_.size()) {
-    if (a.data_[a_ind].first == b.data_[b_ind].first) {
-      dot_product += a.data_[a_ind].second * b.data_[b_ind].second;
-      ++a_ind;
-      ++b_ind;
+  size_t lhs_index = 0;
+  size_t rhs_index = 0;
+  while (lhs_index < lhs.data_.size() && rhs_index < rhs.data_.size()) {
+    if (lhs.data_[lhs_index].first == rhs.data_[rhs_index].first) {
+      dot_product += lhs.data_[lhs_index].second * rhs.data_[rhs_index].second;
+      ++lhs_index;
+      ++rhs_index;
     } else {
-      if (a.data_[a_ind].first < b.data_[b_ind].first) {
-        ++a_ind;
+      if (lhs.data_[lhs_index].first < rhs.data_[rhs_index].first) {
+        ++lhs_index;
       } else {
-        ++b_ind;
+        ++rhs_index;
       }
     }
   }

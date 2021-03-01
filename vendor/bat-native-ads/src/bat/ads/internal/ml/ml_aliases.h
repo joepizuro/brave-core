@@ -15,9 +15,7 @@ namespace ads {
 namespace ml {
 
 namespace transformation {
-
 class Transformation;
-
 }  // namespace transformation
 
 using PredictionMap = std::map<std::string, double>;

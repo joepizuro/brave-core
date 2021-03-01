@@ -6,13 +6,14 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ML_DATA_VECTOR_DATA_ALIASES_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ML_DATA_VECTOR_DATA_ALIASES_H_
 
+#include <stdint.h>
 #include <utility>
 
 namespace ads {
 namespace ml {
 namespace data {
 
-using SparseVectorElement = std::pair<unsigned, double>;
+using SparseVectorElement = std::pair<uint32_t, double>;
 
 }  // namespace data
 }  // namespace ml

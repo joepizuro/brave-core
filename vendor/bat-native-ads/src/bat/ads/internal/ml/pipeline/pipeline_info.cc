@@ -4,7 +4,6 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include <string>
-#include <vector>
 
 #include "bat/ads/internal/ml/ml_util.h"
 #include "bat/ads/internal/ml/pipeline/pipeline_info.h"

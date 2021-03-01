@@ -6,6 +6,7 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ML_TRANSFORMATION_HASH_VECTORIZER_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ML_TRANSFORMATION_HASH_VECTORIZER_H_
 
+#include <stdint.h>
 #include <map>
 #include <string>
 #include <vector>
@@ -20,20 +21,20 @@ class HashVectorizer {
 
   HashVectorizer(const HashVectorizer& other);
 
-  HashVectorizer(int n_buckets, const std::vector<int>& subgrams);
+  HashVectorizer(const int n_buckets, const std::vector<int>& subgrams);
 
   ~HashVectorizer();
 
-  std::map<unsigned, double> GetFrequencies(const std::string& html);
+  std::map<uint32_t, double> GetFrequencies(const std::string& html);
 
-  std::vector<unsigned> GetSubstringSizes() const;
+  std::vector<uint32_t> GetSubstringSizes() const;
 
   int GetBucketCount() const;
 
  private:
-  unsigned GetHash(const std::string& text);
+  uint32_t GetHash(const std::string& text);
 
-  std::vector<unsigned> substring_sizes_;
+  std::vector<uint32_t> substring_sizes_;
   int bucket_count_;
 };
 

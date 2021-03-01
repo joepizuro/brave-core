@@ -18,17 +18,17 @@ namespace ml {
 
 PredictionMap Softmax(const PredictionMap& y) {
   double maximum = -std::numeric_limits<double>::infinity();
-  for (auto const& x : y) {
+  for (const auto& x : y) {
     maximum = std::max(maximum, x.second);
   }
   std::map<std::string, double> rtn;
   double sum_exp = 0.0;
-  for (auto const& x : y) {
+  for (const auto& x : y) {
     double val = std::exp(x.second - maximum);
     rtn[x.first] = val;
     sum_exp += val;
   }
-  for (auto const& x : rtn) {
+  for (const auto& x : rtn) {
     rtn[x.first] /= sum_exp;
   }
   return rtn;

@@ -30,22 +30,28 @@ Linear::Linear(const Linear& linear_model) = default;
 
 Linear::~Linear() = default;
 
-PredictionMap Linear::Predict(const data::VectorData& x) {
-  PredictionMap rtn;
-  for (auto kv : weights_) {
-    rtn[kv.first] = kv.second * x + biases_[kv.first];
+PredictionMap Linear::Predict(const data::VectorData& x) const {
+  PredictionMap predictions;
+  for (const auto& kv : weights_) {
+    double prediction = kv.second * x;
+    const auto iter = biases_.find(kv.first);
+    if (iter != biases_.end()) {
+      prediction += iter->second;
+    }
+    predictions[kv.first] = prediction;
   }
-  return rtn;
+  return predictions;
 }
 
-PredictionMap Linear::TopPredictions(const data::VectorData& x, int top_count) {
+PredictionMap Linear::TopPredictions(const data::VectorData& x,
+                                     const int top_count) const {
   PredictionMap pred_map = Predict(x);
   PredictionMap pred_map_softmax = Softmax(pred_map);
   std::vector<std::pair<double, std::string>> pred_order;
   pred_order.reserve(pred_map_softmax.size());
-  for (auto pred_it = pred_map_softmax.begin();
-       pred_it != pred_map_softmax.end(); pred_it++) {
-    pred_order.push_back(std::make_pair(pred_it->second, pred_it->first));
+  for (auto iter = pred_map_softmax.begin(); iter != pred_map_softmax.end();
+       iter++) {
+    pred_order.push_back(std::make_pair(iter->second, iter->first));
   }
   std::sort(pred_order.rbegin(), pred_order.rend());
   PredictionMap top_pred;
