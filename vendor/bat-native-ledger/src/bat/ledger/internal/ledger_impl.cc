@@ -823,9 +823,8 @@ std::string LedgerImpl::GetWalletPassphrase() const {
   return wallet()->GetWalletPassphrase(brave_wallet->Clone());
 }
 
-void LedgerImpl::LinkBraveWallet(
-    const std::string& destination_payment_id,
-    ResultCallback callback) {
+void LedgerImpl::LinkBraveWallet(const std::string& destination_payment_id,
+                                 PostSuggestionsClaimCallback callback) {
   wallet()->LinkBraveWallet(destination_payment_id, callback);
 }
 
