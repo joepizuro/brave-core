@@ -45,23 +45,23 @@ PredictionMap Linear::Predict(const VectorData& x) const {
 
 PredictionMap Linear::GetTopPredictions(const VectorData& x,
                                         const int top_count) const {
-  PredictionMap pred_map = Predict(x);
-  PredictionMap pred_map_softmax = Softmax(pred_map);
-  std::vector<std::pair<double, std::string>> pred_order;
-  pred_order.reserve(pred_map_softmax.size());
-  for (auto iter = pred_map_softmax.begin(); iter != pred_map_softmax.end();
-       iter++) {
-    pred_order.push_back(std::make_pair(iter->second, iter->first));
+  PredictionMap prediction_map = Predict(x);
+  PredictionMap prediction_map_softmax = Softmax(prediction_map);
+  std::vector<std::pair<double, std::string>> prediction_order;
+  prediction_order.reserve(prediction_map_softmax.size());
+  for (auto iter = prediction_map_softmax.begin();
+       iter != prediction_map_softmax.end(); iter++) {
+    prediction_order.push_back(std::make_pair(iter->second, iter->first));
   }
-  std::sort(pred_order.rbegin(), pred_order.rend());
-  PredictionMap top_pred;
+  std::sort(prediction_order.rbegin(), prediction_order.rend());
+  PredictionMap top_predictions;
   if (top_count > 0) {
-    pred_order.resize(top_count);
+    prediction_order.resize(top_count);
   }
-  for (size_t i = 0; i < pred_order.size(); ++i) {
-    top_pred[pred_order[i].second] = pred_order[i].first;
+  for (size_t i = 0; i < prediction_order.size(); ++i) {
+    top_predictions[prediction_order[i].second] = prediction_order[i].first;
   }
-  return top_pred;
+  return top_predictions;
 }
 
 }  // namespace model

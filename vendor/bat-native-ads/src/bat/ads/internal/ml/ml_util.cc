@@ -6,9 +6,7 @@
 #include <algorithm>
 #include <cmath>
 #include <limits>
-#include <map>
 #include <memory>
-#include <string>
 
 #include "base/notreached.h"
 #include "bat/ads/internal/ml/ml_util.h"
@@ -21,7 +19,7 @@ PredictionMap Softmax(const PredictionMap& predictions) {
   for (const auto& prediction : predictions) {
     maximum = std::max(maximum, prediction.second);
   }
-  std::map<std::string, double> softmax_predictions;
+  PredictionMap softmax_predictions;
   double sum_exp = 0.0;
   for (const auto& prediction : predictions) {
     const double val = std::exp(prediction.second - maximum);

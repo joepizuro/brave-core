@@ -6,11 +6,6 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ML_ML_UTIL_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ML_ML_UTIL_H_
 
-#include <cmath>
-#include <map>
-#include <memory>
-#include <string>
-
 #include "bat/ads/internal/ml/ml_aliases.h"
 #include "bat/ads/internal/ml/transformation/hashed_ngrams_transformation.h"
 #include "bat/ads/internal/ml/transformation/lowercase_transformation.h"
