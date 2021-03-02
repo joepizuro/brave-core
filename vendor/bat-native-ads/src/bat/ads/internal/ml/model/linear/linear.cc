@@ -43,8 +43,8 @@ PredictionMap Linear::Predict(const VectorData& x) const {
   return predictions;
 }
 
-PredictionMap Linear::TopPredictions(const VectorData& x,
-                                     const int top_count) const {
+PredictionMap Linear::GetTopPredictions(const VectorData& x,
+                                        const int top_count) const {
   PredictionMap pred_map = Predict(x);
   PredictionMap pred_map_softmax = Softmax(pred_map);
   std::vector<std::pair<double, std::string>> pred_order;

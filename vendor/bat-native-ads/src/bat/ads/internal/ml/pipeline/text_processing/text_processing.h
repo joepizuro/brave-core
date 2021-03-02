@@ -43,17 +43,17 @@ class TextProcessing {
 
   ~TextProcessing();
 
-  bool IsInitialized();
+  bool IsInitialized() const;
 
   void SetInfo(const PipelineInfo& info);
 
   bool FromJson(const std::string& json);
 
-  PredictionMap Apply(const std::unique_ptr<Data>& input_data);
+  PredictionMap Apply(const std::unique_ptr<Data>& input_data) const;
 
-  const PredictionMap GetTopPredictions(const std::string& content);
+  const PredictionMap GetTopPredictions(const std::string& content) const;
 
-  const PredictionMap ClassifyPage(const std::string& content);
+  const PredictionMap ClassifyPage(const std::string& content) const;
 
  private:
   bool is_initialized_ = false;

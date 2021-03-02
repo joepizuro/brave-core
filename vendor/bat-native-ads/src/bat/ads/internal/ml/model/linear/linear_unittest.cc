@@ -125,9 +125,9 @@ TEST_F(BatAdsLinearModelTest, TopPredictionsTest) {
   const VectorData point_3(std::vector<double>{0.92, 0.95, 0.85, 0.91, 0.73});
 
   // Act
-  const PredictionMap res_1 = linear_biased.TopPredictions(point_1);
-  const PredictionMap res_2 = linear_biased.TopPredictions(point_2, 2);
-  const PredictionMap res_3 = linear_biased.TopPredictions(point_3, 1);
+  const PredictionMap res_1 = linear_biased.GetTopPredictions(point_1);
+  const PredictionMap res_2 = linear_biased.GetTopPredictions(point_2, 2);
+  const PredictionMap res_3 = linear_biased.GetTopPredictions(point_3, 1);
 
   // Assert
   ASSERT_EQ(res_1.size(), static_cast<size_t>(5));

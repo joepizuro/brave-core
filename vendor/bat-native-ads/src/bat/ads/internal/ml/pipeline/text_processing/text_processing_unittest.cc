@@ -58,40 +58,40 @@ TEST_F(BatAdsTextProcessingPipelineTest, BuildSimplePipeline) {
   transformations.push_back(
       std::make_unique<transformation::HashedNGrams>(hashed_ngrams));
 
-  std::map<std::string, VectorData> weights = {
+  const std::map<std::string, VectorData> weights = {
       {"class_1", VectorData(std::vector<double>{1.0, 2.0, 3.0})},
       {"class_2", VectorData(std::vector<double>{3.0, 2.0, 1.0})},
       {"class_3", VectorData(std::vector<double>{2.0, 2.0, 2.0})}};
 
-  std::map<std::string, double> biases = {
+  const std::map<std::string, double> biases = {
       {"class_1", 0.0}, {"class_2", 0.0}, {"class_3", 0.0}};
 
-  model::Linear linear_model(weights, biases);
-  pipeline::TextProcessing pipeline =
+  const model::Linear linear_model(weights, biases);
+  const pipeline::TextProcessing pipeline =
       pipeline::TextProcessing(transformations, linear_model);
 
-  VectorData data_point_3(std::vector<double>{1.0, 0.0, 0.0});
+  const VectorData data_point_3(std::vector<double>{1.0, 0.0, 0.0});
 
   // Act
-  PredictionMap data_point_3_res = linear_model.Predict(data_point_3);
-  PredictionMap res = pipeline.GetTopPredictions(kTestString);
+  const PredictionMap data_point_3_res = linear_model.Predict(data_point_3);
+  const PredictionMap res = pipeline.GetTopPredictions(kTestString);
 
   // Assert
   ASSERT_EQ(data_point_3_res.size(), kExpectedLen);
   ASSERT_TRUE(res.size() && res.size() <= kExpectedLen);
-  for (auto const& pred : res) {
+  for (const auto& pred : res) {
     EXPECT_TRUE(pred.second > -kTolerance && pred.second < 1.0 + kTolerance);
   }
 }
 
 TEST_F(BatAdsTextProcessingPipelineTest, TestLoadFromJson) {
   // Arrange
-  std::vector<std::string> train_texts = {
+  const std::vector<std::string> train_texts = {
       "This is a spam email.", "Another spam trying to sell you viagra",
       "Message from mom with no real subject",
       "Another messase from mom with no real subject", "Yadayada"};
-  std::vector<std::string> train_labels = {"spam", "spam", "ham", "ham",
-                                           "junk"};
+  const std::vector<std::string> train_labels = {"spam", "spam", "ham", "ham",
+                                                 "junk"};
 
   const base::Optional<std::string> opt_value =
       ReadFileFromTestPathToString(kPipelineSpam);
@@ -105,18 +105,18 @@ TEST_F(BatAdsTextProcessingPipelineTest, TestLoadFromJson) {
 
   std::vector<PredictionMap> prediction_maps(train_texts.size());
   for (size_t i = 0; i < train_texts.size(); i++) {
-    std::unique_ptr<Data> text_data =
+    const std::unique_ptr<Data> text_data =
         std::make_unique<TextData>(TextData(train_texts[i]));
-    PredictionMap prediction_map = pipeline.Apply(text_data);
+    const PredictionMap prediction_map = pipeline.Apply(text_data);
     prediction_maps[i] = prediction_map;
   }
 
   // Assert
   for (size_t i = 0; i < prediction_maps.size(); i++) {
-    PredictionMap& prediction_map = prediction_maps[i];
-    for (auto const& pred : prediction_map) {
-      double other_prediction = pred.second;
-      EXPECT_TRUE(prediction_map[train_labels[i]] >= other_prediction);
+    const PredictionMap& prediction_map = prediction_maps[i];
+    for (const auto& pred : prediction_map) {
+      const double other_prediction = pred.second;
+      EXPECT_TRUE(prediction_map.at(train_labels[i]) >= other_prediction);
     }
   }
 }
@@ -177,6 +177,7 @@ TEST_F(BatAdsTextProcessingPipelineTest, MissingModelTest) {
 
 TEST_F(BatAdsTextProcessingPipelineTest, TopPredUnitTest) {
   // Arrange
+  const size_t kMaxPredictionsSize = 100;
   const std::string kTestPage = "ethereum bitcoin bat zcash crypto tokens!";
   pipeline::TextProcessing text_proc_pipeline;
   const base::Optional<std::string> opt_value =
@@ -186,19 +187,21 @@ TEST_F(BatAdsTextProcessingPipelineTest, TopPredUnitTest) {
   ASSERT_TRUE(opt_value.has_value());
   const std::string model_json = opt_value.value();
   ASSERT_TRUE(text_proc_pipeline.FromJson(model_json));
-  PredictionMap preds = text_proc_pipeline.ClassifyPage(kTestPage);
+  const PredictionMap preds = text_proc_pipeline.ClassifyPage(kTestPage);
 
   // Assert
   ASSERT_TRUE(preds.size());
-  ASSERT_LT(preds.size(), static_cast<size_t>(100));
+  ASSERT_LT(preds.size(), kMaxPredictionsSize);
   ASSERT_TRUE(preds.count("crypto-crypto"));
   for (auto const& pred : preds) {
-    EXPECT_TRUE(pred.second <= preds["crypto-crypto"]);
+    EXPECT_TRUE(pred.second <= preds.at("crypto-crypto"));
   }
 }
 
 TEST_F(BatAdsTextProcessingPipelineTest, TextCMCCrashTest) {
   // Arrange
+  const size_t kMinPredictionsSize = 2;
+  const size_t kMaxPredictionsSize = 100;
   pipeline::TextProcessing text_proc_pipeline;
 
   const base::Optional<std::string> opt_value =
@@ -214,14 +217,14 @@ TEST_F(BatAdsTextProcessingPipelineTest, TextCMCCrashTest) {
   // Act
   ASSERT_TRUE(opt_text_value.has_value());
   const std::string bad_text = opt_text_value.value();
-  PredictionMap preds = text_proc_pipeline.ClassifyPage(bad_text);
+  const PredictionMap preds = text_proc_pipeline.ClassifyPage(bad_text);
 
   // Assert
-  ASSERT_LT(preds.size(), static_cast<size_t>(100));
-  ASSERT_GT(preds.size(), static_cast<size_t>(2));
+  ASSERT_GT(preds.size(), kMinPredictionsSize);
+  ASSERT_LT(preds.size(), kMaxPredictionsSize);
   ASSERT_TRUE(preds.count("personal finance-personal finance"));
-  for (auto const& pred : preds) {
-    EXPECT_TRUE(pred.second <= preds["personal finance-personal finance"]);
+  for (const auto& pred : preds) {
+    EXPECT_TRUE(pred.second <= preds.at("personal finance-personal finance"));
   }
 }
 

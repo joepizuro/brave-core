@@ -27,7 +27,7 @@ TextProcessing* TextProcessing::CreateInstance() {
   return new TextProcessing();
 }
 
-bool TextProcessing::IsInitialized() {
+bool TextProcessing::IsInitialized() const {
   return is_initialized_;
 }
 
@@ -72,7 +72,8 @@ bool TextProcessing::FromJson(const std::string& json) {
   return is_initialized_;
 }
 
-PredictionMap TextProcessing::Apply(const std::unique_ptr<Data>& input_data) {
+PredictionMap TextProcessing::Apply(
+    const std::unique_ptr<Data>& input_data) const {
   VectorData vector_data;
   size_t transformation_count = transformations_.size();
 
@@ -89,10 +90,11 @@ PredictionMap TextProcessing::Apply(const std::unique_ptr<Data>& input_data) {
     vector_data = *static_cast<VectorData*>(current_data.get());
   }
 
-  return linear_model_.TopPredictions(vector_data);
+  return linear_model_.GetTopPredictions(vector_data);
 }
 
-const PredictionMap TextProcessing::GetTopPredictions(const std::string& html) {
+const PredictionMap TextProcessing::GetTopPredictions(
+    const std::string& html) const {
   TextData text_data(html);
   PredictionMap predictions = Apply(std::make_unique<TextData>(text_data));
   double expected_prob =
@@ -106,7 +108,8 @@ const PredictionMap TextProcessing::GetTopPredictions(const std::string& html) {
   return rtn;
 }
 
-const PredictionMap TextProcessing::ClassifyPage(const std::string& content) {
+const PredictionMap TextProcessing::ClassifyPage(
+    const std::string& content) const {
   if (!IsInitialized()) {
     return PredictionMap();
   }
