@@ -31,18 +31,20 @@ TEST_F(BatAdsVectorDataTest, DenseVectorDataInitialization) {
   // Act
 
   // Assert
-  EXPECT_EQ(dense_data_vector_5.GetDimensionCount(), 5);
+  EXPECT_EQ(static_cast<int>(v_5.size()),
+            dense_data_vector_5.GetDimensionCount());
 }
 
 TEST_F(BatAdsVectorDataTest, SparseVectorDataInitialization) {
   // Arrange
+  const int kDimensionCount = 6;
   const std::map<unsigned, double> s_6 = {{0UL, 1.0}, {2UL, 3.0}, {3UL, -2.0}};
-  const VectorData sparse_data_vector_6(6, s_6);
+  const VectorData sparse_data_vector_6(kDimensionCount, s_6);
 
   // Act
 
   // Assert
-  EXPECT_EQ(sparse_data_vector_6.GetDimensionCount(), 6);
+  EXPECT_EQ(kDimensionCount, sparse_data_vector_6.GetDimensionCount());
 }
 
 TEST_F(BatAdsVectorDataTest, DenseDenseProduct) {

@@ -41,41 +41,42 @@ void RunHashingExtractorTestCase(const std::string& test_case_name) {
   ASSERT_TRUE(opt_value.has_value());
   const std::string hash_check_json = opt_value.value();
 
-  base::Optional<base::Value> root = base::JSONReader::Read(hash_check_json);
+  const base::Optional<base::Value> root =
+      base::JSONReader::Read(hash_check_json);
   ASSERT_TRUE(root);
 
-  base::Value* case_params = root->FindDictKey(test_case_name);
+  const base::Value* case_params = root->FindDictKey(test_case_name);
   ASSERT_TRUE(case_params);
 
-  std::string* input = case_params->FindStringKey("input");
+  const std::string* input = case_params->FindStringKey("input");
   ASSERT_TRUE(input);
 
-  base::Value* idx = case_params->FindListKey("idx");
+  const base::Value* idx = case_params->FindListKey("idx");
   ASSERT_TRUE(idx);
 
-  base::Value* count = case_params->FindListKey("count");
+  const base::Value* count = case_params->FindListKey("count");
   ASSERT_TRUE(count);
 
-  std::string input_value = *input;
-  transformation::HashVectorizer vectorizer;
-  std::map<unsigned, double> frequencies =
+  const std::string input_value = *input;
+  const transformation::HashVectorizer vectorizer;
+  const std::map<unsigned, double> frequencies =
       vectorizer.GetFrequencies(input_value);
   auto idx_list = idx->GetList();
   auto count_list = count->GetList();
 
   // Assert
-  ASSERT_EQ(idx_list.size(), frequencies.size());
+  ASSERT_EQ(frequencies.size(), idx_list.size());
   for (size_t i = 0; i < frequencies.size(); ++i) {
     const base::Value& idx_val = idx_list[i];
     const base::Value& count_val = count_list[i];
-    EXPECT_TRUE(count_val.GetInt() - frequencies[idx_val.GetInt()] <
+    EXPECT_TRUE(count_val.GetInt() - frequencies.at(idx_val.GetInt()) <
                 kTolerance);
   }
 }
 
 TEST_F(BatAdsHashVectorizerTest, ValidJsonScheme) {
   // Arrange
-  base::Optional<base::Value> root = base::JSONReader::Read(
+  const base::Optional<base::Value> root = base::JSONReader::Read(
       "{"
       "  \"test\": {"
       "    \"foo\": true,"
@@ -95,10 +96,10 @@ TEST_F(BatAdsHashVectorizerTest, ValidJsonScheme) {
   ASSERT_TRUE(root);
   ASSERT_TRUE(root->is_dict());
 
-  base::Value* dict = root->FindDictKey("test");
+  const base::Value* dict = root->FindDictKey("test");
   ASSERT_TRUE(dict);
 
-  base::Value* list = root->FindListKey("list");
+  const base::Value* list = root->FindListKey("list");
   EXPECT_TRUE(list);
 }
 

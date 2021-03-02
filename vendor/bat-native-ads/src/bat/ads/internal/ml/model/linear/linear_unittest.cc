@@ -80,6 +80,7 @@ TEST_F(BatAdsLinearModelTest, BiasesPredictionTest) {
 
 TEST_F(BatAdsLinearModelTest, BinaryClassifierPredictionTest) {
   // Arrange
+  const size_t kExpectedPredictionSize = 1;
   const std::map<std::string, VectorData> weights = {
       {"the_only_class", VectorData(std::vector<double>{0.3, 0.2, 0.25})},
   };
@@ -97,8 +98,8 @@ TEST_F(BatAdsLinearModelTest, BinaryClassifierPredictionTest) {
   const PredictionMap res_1 = linear.Predict(data_vector_1);
 
   // Assert
-  ASSERT_EQ(res_0.size(), static_cast<size_t>(1));
-  ASSERT_EQ(res_1.size(), static_cast<size_t>(1));
+  ASSERT_EQ(kExpectedPredictionSize, res_0.size());
+  ASSERT_EQ(kExpectedPredictionSize, res_1.size());
 
   EXPECT_TRUE(res_0.at("the_only_class") < 0.5 &&
               res_1.at("the_only_class") > 0.5);
@@ -106,6 +107,7 @@ TEST_F(BatAdsLinearModelTest, BinaryClassifierPredictionTest) {
 
 TEST_F(BatAdsLinearModelTest, TopPredictionsTest) {
   // Arrange
+  const size_t kPredictionLimits[2] = {2, 1};
   const std::map<std::string, VectorData> weights = {
       {"class_1", VectorData(std::vector<double>{1.0, 0.5, 0.8})},
       {"class_2", VectorData(std::vector<double>{0.3, 1.0, 0.7})},
@@ -126,13 +128,15 @@ TEST_F(BatAdsLinearModelTest, TopPredictionsTest) {
 
   // Act
   const PredictionMap res_1 = linear_biased.GetTopPredictions(point_1);
-  const PredictionMap res_2 = linear_biased.GetTopPredictions(point_2, 2);
-  const PredictionMap res_3 = linear_biased.GetTopPredictions(point_3, 1);
+  const PredictionMap res_2 =
+      linear_biased.GetTopPredictions(point_2, kPredictionLimits[0]);
+  const PredictionMap res_3 =
+      linear_biased.GetTopPredictions(point_3, kPredictionLimits[1]);
 
   // Assert
-  ASSERT_EQ(res_1.size(), static_cast<size_t>(5));
-  ASSERT_EQ(res_2.size(), static_cast<size_t>(2));
-  EXPECT_EQ(res_3.size(), static_cast<size_t>(1));
+  ASSERT_EQ(weights.size(), res_1.size());
+  ASSERT_EQ(kPredictionLimits[0], res_2.size());
+  EXPECT_EQ(kPredictionLimits[1], res_3.size());
 }
 
 }  // namespace ml

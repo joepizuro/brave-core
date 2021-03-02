@@ -46,9 +46,9 @@ TEST_F(BatAdsNormalizationTest, NormalizationTest) {
 
   data = normalization.Apply(data);
 
-  ASSERT_EQ(data->GetType(), DataType::VECTOR_DATA);
+  ASSERT_EQ(DataType::VECTOR_DATA, data->GetType());
 
-  VectorData* norm_data = static_cast<VectorData*>(data.release());
+  const VectorData* norm_data = static_cast<VectorData*>(data.release());
 
   std::vector<double> components;
   double s = 0.0;
@@ -73,18 +73,18 @@ TEST_F(BatAdsNormalizationTest, ChainingTest) {
 
   TransformationVector chain;
 
-  transformation::Lowercase lowercase;
+  const transformation::Lowercase lowercase;
   chain.push_back(std::make_unique<transformation::Lowercase>(lowercase));
 
-  transformation::HashedNGrams hashed_ngrams;
+  const transformation::HashedNGrams hashed_ngrams;
   chain.push_back(
       std::make_unique<transformation::HashedNGrams>(hashed_ngrams));
 
-  transformation::Normalization normalization;
+  const transformation::Normalization normalization;
   chain.push_back(
       std::make_unique<transformation::Normalization>(normalization));
 
-  TextData text_data(kTestString);
+  const TextData text_data(kTestString);
   std::unique_ptr<Data> data = std::make_unique<TextData>(text_data);
 
   // Act
@@ -92,14 +92,14 @@ TEST_F(BatAdsNormalizationTest, ChainingTest) {
     data = chain[i]->Apply(data);
   }
 
-  ASSERT_EQ(data->GetType(), DataType::VECTOR_DATA);
-  VectorData* vect_data = static_cast<VectorData*>(data.get());
+  ASSERT_EQ(DataType::VECTOR_DATA, data->GetType());
+  const VectorData* vect_data = static_cast<VectorData*>(data.get());
 
   // Assert
-  EXPECT_EQ(vect_data->GetDimensionCount(), kDefaultBucketCount);
+  EXPECT_EQ(kDefaultBucketCount, vect_data->GetDimensionCount());
 
   // Hashes for [t, i, n, y, ti, in, ny, tin, iny, tiny] -- 10 in total
-  EXPECT_EQ(vect_data->GetRawData().size(), kExpectedElementCount);
+  EXPECT_EQ(kExpectedElementCount, vect_data->GetRawData().size());
 }
 
 }  // namespace ml

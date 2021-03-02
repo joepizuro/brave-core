@@ -41,12 +41,12 @@ TEST_F(BatAdsMLToolsUtilTest, SoftmaxTest) {
   }
 
   // Assert
-  ASSERT_TRUE(predictions.at("c3") > predictions.at("c1"));
-  ASSERT_TRUE(predictions.at("c3") > predictions.at("c2"));
-  ASSERT_TRUE(predictions.at("c2") > predictions.at("c1"));
-  ASSERT_TRUE(predictions.at("c1") > 0.0);
-  ASSERT_TRUE(predictions.at("c3") < 1.0);
-  EXPECT_TRUE(sum - 1.0 < kTolerance);
+  ASSERT_GT(predictions.at("c3"), predictions.at("c1"));
+  ASSERT_GT(predictions.at("c3"), predictions.at("c2"));
+  ASSERT_GT(predictions.at("c2"), predictions.at("c1"));
+  ASSERT_GT(predictions.at("c1"), 0.0);
+  ASSERT_LT(predictions.at("c3"), 1.0);
+  EXPECT_LT(sum - 1.0, kTolerance);
 }
 
 TEST_F(BatAdsMLToolsUtilTest, ExtendedSoftmaxTest) {
@@ -64,12 +64,12 @@ TEST_F(BatAdsMLToolsUtilTest, ExtendedSoftmaxTest) {
   const PredictionMap predictions_2 = Softmax(group_2);
 
   // Assert
-  ASSERT_TRUE(std::fabs(predictions_1.at("c1") - predictions_2.at("c1")) <
-              kTolerance);
-  ASSERT_TRUE(std::fabs(predictions_1.at("c2") - predictions_2.at("c2")) <
-              kTolerance);
-  ASSERT_TRUE(std::fabs(predictions_1.at("c3") - predictions_2.at("c3")) <
-              kTolerance);
+  ASSERT_LT(std::fabs(predictions_1.at("c1") - predictions_2.at("c1")),
+            kTolerance);
+  ASSERT_LT(std::fabs(predictions_1.at("c2") - predictions_2.at("c2")),
+            kTolerance);
+  ASSERT_LT(std::fabs(predictions_1.at("c3") - predictions_2.at("c3")),
+            kTolerance);
 
   EXPECT_TRUE(std::fabs(predictions_1.at("c1") - 0.09003057) < kTolerance &&
               std::fabs(predictions_1.at("c2") - 0.24472847) < kTolerance &&
@@ -78,12 +78,12 @@ TEST_F(BatAdsMLToolsUtilTest, ExtendedSoftmaxTest) {
 
 TEST_F(BatAdsMLToolsUtilTest, TransformationCopyTest) {
   // Arrange
-  transformation::Normalization normalization;
+  const transformation::Normalization normalization;
   TransformationPtr transformation_ptr =
       std::make_unique<transformation::Normalization>(normalization);
 
   // Act
-  TransformationPtr transformation_ptr_copy =
+  const TransformationPtr transformation_ptr_copy =
       GetTransformationCopy(transformation_ptr);
 
   // Assert
@@ -96,20 +96,20 @@ TEST_F(BatAdsMLToolsUtilTest, TransformationVectorCopyTest) {
   const size_t kVectorSize = 2;
 
   TransformationVector transformation_vector;
-  transformation::HashedNGrams hashed_ngrams;
+  const transformation::HashedNGrams hashed_ngrams;
   transformation_vector.push_back(
       std::make_unique<transformation::HashedNGrams>(hashed_ngrams));
 
-  transformation::Normalization normalization;
+  const transformation::Normalization normalization;
   transformation_vector.push_back(
       std::make_unique<transformation::Normalization>(normalization));
 
   // Act
-  TransformationVector transformation_vector_copy =
+  const TransformationVector transformation_vector_copy =
       GetTransformationVectorCopy(transformation_vector);
 
   // Assert
-  ASSERT_EQ(transformation_vector_copy.size(), kVectorSize);
+  ASSERT_EQ(kVectorSize, transformation_vector_copy.size());
   EXPECT_TRUE(transformation_vector_copy[0]->GetType() ==
                   transformation::TransformationType::HASHED_NGRAMS &&
               transformation_vector_copy[1]->GetType() ==

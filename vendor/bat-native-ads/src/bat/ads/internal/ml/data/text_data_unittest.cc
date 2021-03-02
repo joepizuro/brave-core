@@ -30,7 +30,7 @@ TEST_F(BatAdsTextDataTest, TextDataInitialization) {
   const std::string text = text_data.GetText();
 
   // Assert
-  EXPECT_EQ(text, expected_text);
+  EXPECT_EQ(expected_text, text);
 }
 
 }  // namespace ml

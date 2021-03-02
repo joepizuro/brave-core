@@ -77,7 +77,7 @@ TEST_F(BatAdsTextProcessingPipelineTest, BuildSimplePipeline) {
   const PredictionMap res = pipeline.GetTopPredictions(kTestString);
 
   // Assert
-  ASSERT_EQ(data_point_3_res.size(), kExpectedLen);
+  ASSERT_EQ(kExpectedLen, data_point_3_res.size());
   ASSERT_TRUE(res.size() && res.size() <= kExpectedLen);
   for (const auto& pred : res) {
     EXPECT_TRUE(pred.second > -kTolerance && pred.second < 1.0 + kTolerance);

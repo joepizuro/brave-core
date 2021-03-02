@@ -37,7 +37,7 @@ TEST_F(BatAdsPipelineUtilTest, ParsePipelineJSONTest) {
   const std::string json = opt_value.value();
 
   // Act
-  base::Optional<pipeline::PipelineInfo> pipeline_info =
+  const base::Optional<pipeline::PipelineInfo> pipeline_info =
       pipeline::ParsePipelineJSON(json);
 
   // Assert
