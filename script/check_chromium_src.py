@@ -32,15 +32,18 @@ BRAVE_SRC = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 BRAVE_CHROMIUM_SRC = os.path.join(BRAVE_SRC, 'chromium_src')
 CHROMIUM_SRC = os.path.abspath(os.path.dirname(BRAVE_SRC))
 
+
+# This list of EXCLUDES will only work as expected when this script is run
+# from UNIX-like shells (e.g. Linux, Mac or shells like Git Bash on Windows).
 EXCLUDES = [
-  './CPPLINT.cfg',
+  'CPPLINT.cfg',
   '_(unit|browser)test(_mac)?.cc',
   'third_party/blink/renderer/modules/battery/navigator_batterytest.cc',
   'third_party/blink/renderer/modules/bluetooth/navigator_bluetoothtest.cc',
   'third_party/blink/renderer/modules/quota/navigator_storagetest.cc',
   'third_party/blink/renderer/modules/storage/brave_dom_window_storage.h',
-  './chrome/installer/linux/common/brave-browser/chromium-browser.appdata.xml',
-  './chrome/installer/linux/common/brave-browser/chromium-browser.info',
+  'chrome/installer/linux/common/brave-browser/chromium-browser.appdata.xml',
+  'chrome/installer/linux/common/brave-browser/chromium-browser.info',
 ]
 
 
