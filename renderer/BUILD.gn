@@ -1,3 +1,4 @@
+import("//brave/components/brave_wallet/buildflags/buildflags.gni")
 import("//build/config/features.gni")
 
 source_set("renderer") {
@@ -11,7 +12,13 @@ source_set("renderer") {
   public_deps = [ "//chrome/renderer" ]
 
   deps = [
+    "//brave/components/brave_wallet/buildflags",
     "//brave/components/cosmetic_filters/renderer",
-    "//brave/components/brave_wallet/renderer",
   ]
+
+  if (brave_wallet_enabled) {
+    deps += [
+      "//brave/components/brave_wallet/renderer",
+    ]
+  }
 }
