@@ -30,7 +30,8 @@ class HashedNGrams : public Transformation {
 
   explicit HashedNGrams(const std::string& parameters);
 
-  std::unique_ptr<Data> Apply(const std::unique_ptr<Data>& input_data) const override;
+  std::unique_ptr<Data> Apply(
+      const std::unique_ptr<Data>& input_data) const override;
 
  private:
   std::unique_ptr<HashVectorizer> hash_vectorizer;

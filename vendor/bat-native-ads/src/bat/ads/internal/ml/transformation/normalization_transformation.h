@@ -20,7 +20,8 @@ class Normalization : public Transformation {
 
   ~Normalization() override;
 
-  std::unique_ptr<Data> Apply(const std::unique_ptr<Data>& input_data) const override;
+  std::unique_ptr<Data> Apply(
+      const std::unique_ptr<Data>& input_data) const override;
 };
 
 }  // namespace transformation
