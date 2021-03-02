@@ -22,10 +22,11 @@ namespace ml {
 
 PredictionMap Softmax(const PredictionMap& y);
 
-TransformationPtr GetTransformationCopy(const TransformationPtr& tr_ptr);
+TransformationPtr GetTransformationCopy(
+    const TransformationPtr& transformation_ptr);
 
 TransformationVector GetTransformationVectorCopy(
-    const TransformationVector& tr_vect);
+    const TransformationVector& transformation_vector);
 
 }  // namespace ml
 }  // namespace ads

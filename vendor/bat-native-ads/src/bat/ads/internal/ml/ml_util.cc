@@ -16,43 +16,47 @@
 namespace ads {
 namespace ml {
 
-PredictionMap Softmax(const PredictionMap& y) {
+PredictionMap Softmax(const PredictionMap& predictions) {
   double maximum = -std::numeric_limits<double>::infinity();
-  for (const auto& x : y) {
-    maximum = std::max(maximum, x.second);
+  for (const auto& prediction : predictions) {
+    maximum = std::max(maximum, prediction.second);
   }
-  std::map<std::string, double> rtn;
+  std::map<std::string, double> softmax_predictions;
   double sum_exp = 0.0;
-  for (const auto& x : y) {
-    double val = std::exp(x.second - maximum);
-    rtn[x.first] = val;
+  for (const auto& prediction : predictions) {
+    const double val = std::exp(prediction.second - maximum);
+    softmax_predictions[prediction.first] = val;
     sum_exp += val;
   }
-  for (const auto& x : rtn) {
-    rtn[x.first] /= sum_exp;
+  for (auto& prediction : softmax_predictions) {
+    prediction.second /= sum_exp;
   }
-  return rtn;
+  return softmax_predictions;
 }
 
-TransformationPtr GetTransformationCopy(const TransformationPtr& tr_ptr) {
-  if (tr_ptr->GetType() == transformation::TransformationType::LOWERCASE) {
+TransformationPtr GetTransformationCopy(
+    const TransformationPtr& transformation_ptr) {
+  if (transformation_ptr->GetType() ==
+      transformation::TransformationType::LOWERCASE) {
     transformation::Lowercase* lowercase_ptr =
-        static_cast<transformation::Lowercase*>(tr_ptr.get());
+        static_cast<transformation::Lowercase*>(transformation_ptr.get());
     transformation::Lowercase lowercase_copy = *lowercase_ptr;
     return std::make_unique<transformation::Lowercase>(lowercase_copy);
   }
 
-  if (tr_ptr->GetType() == transformation::TransformationType::HASHED_NGRAMS) {
+  if (transformation_ptr->GetType() ==
+      transformation::TransformationType::HASHED_NGRAMS) {
     transformation::HashedNGrams* hashed_n_grams_ptr =
-        static_cast<transformation::HashedNGrams*>(tr_ptr.get());
+        static_cast<transformation::HashedNGrams*>(transformation_ptr.get());
     transformation::HashedNGrams hashed_n_grams_ptr_copy = *hashed_n_grams_ptr;
     return std::make_unique<transformation::HashedNGrams>(
         hashed_n_grams_ptr_copy);
   }
 
-  if (tr_ptr->GetType() == transformation::TransformationType::NORMALIZATION) {
+  if (transformation_ptr->GetType() ==
+      transformation::TransformationType::NORMALIZATION) {
     transformation::Normalization* normalization_ptr =
-        static_cast<transformation::Normalization*>(tr_ptr.get());
+        static_cast<transformation::Normalization*>(transformation_ptr.get());
     transformation::Normalization normalization_copy = *normalization_ptr;
     return std::make_unique<transformation::Normalization>(normalization_copy);
   }
@@ -62,13 +66,14 @@ TransformationPtr GetTransformationCopy(const TransformationPtr& tr_ptr) {
 }
 
 TransformationVector GetTransformationVectorCopy(
-    const TransformationVector& tr_vect) {
-  TransformationVector tr_vect_copy;
-  size_t transformation_count = tr_vect.size();
+    const TransformationVector& transformation_vector) {
+  TransformationVector transformation_vector_copy;
+  const size_t transformation_count = transformation_vector.size();
   for (size_t i = 0; i < transformation_count; ++i) {
-    tr_vect_copy.push_back(GetTransformationCopy(tr_vect[i]));
+    transformation_vector_copy.push_back(
+        GetTransformationCopy(transformation_vector[i]));
   }
-  return tr_vect_copy;
+  return transformation_vector_copy;
 }
 
 }  // namespace ml
