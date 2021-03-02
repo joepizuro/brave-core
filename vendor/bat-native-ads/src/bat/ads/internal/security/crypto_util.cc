@@ -26,43 +26,6 @@
 namespace ads {
 namespace security {
 
-namespace {
-
-const int kHKDFSeedLength = 32;
-
-const uint8_t kHKDFSalt[] = {
-    126, 244, 99,  158, 51,  68,  253, 80,  133, 183, 51,  180, 77,
-    62,  74,  252, 62,  106, 96,  125, 241, 110, 134, 87,  190, 208,
-    158, 84,  125, 69,  246, 207, 162, 247, 107, 172, 37,  34,  53,
-    246, 105, 20,  215, 5,   248, 154, 179, 191, 46,  17,  6,   72,
-    210, 91,  10,  169, 145, 248, 22,  147, 117, 24,  105, 12};
-
-std::vector<uint8_t> GetHKDF(const std::string& secret) {
-  if (secret.empty()) {
-    return {};
-  }
-
-  std::vector<uint8_t> raw_secret;
-  raw_secret.assign(secret.begin(), secret.end());
-
-  std::vector<uint8_t> derived_key(kHKDFSeedLength);
-
-  const uint8_t info[] = {0};
-
-  const int result =
-      HKDF(&derived_key.front(), kHKDFSeedLength, EVP_sha512(),
-           &raw_secret.front(), raw_secret.size(), kHKDFSalt,
-           base::size(kHKDFSalt), info, sizeof(info) / sizeof(info[0]));
-
-  if (result == 0) {
-    return {};
-  }
-
-  return derived_key;
-}
-
-}  // namespace
-
 std::string Sign(const std::map<std::string, std::string>& headers,
                  const std::string& key_id,
                  const std::string& secret_key) {
@@ -120,17 +83,12 @@ std::vector<uint8_t> Sha256Hash(const std::string& value) {
   return sha256;
 }
 
-KeyPairInfo GenerateSignKeyPairFromSeed(const std::vector<uint8_t>& seed) {
+KeyPairInfo GenerateSignKeyPair() {
+  std::vector<uint8_t> public_key(crypto_box_PUBLICKEYBYTES);
+  std::vector<uint8_t> secret_key(crypto_box_SECRETKEYBYTES);
+  crypto_sign_keypair(&public_key.front(), &secret_key.front(), 0);
+
   KeyPairInfo key_pair;
-  if (seed.empty()) {
-    return key_pair;
-  }
-
-  std::vector<uint8_t> secret_key = seed;
-  secret_key.resize(crypto_sign_SECRETKEYBYTES);
-  std::vector<uint8_t> public_key(crypto_sign_PUBLICKEYBYTES);
-  crypto_sign_keypair(&public_key.front(), &secret_key.front(), 1);
-
   key_pair.public_key = public_key;
   key_pair.secret_key = secret_key;
 
@@ -147,18 +105,6 @@ KeyPairInfo GenerateBoxKeyPair() {
   key_pair.secret_key = secret_key;
 
   return key_pair;
-}
-
-std::vector<uint8_t> GenerateSecretKeyFromSeed(const std::string& seed_base64) {
-  std::string seed;
-  if (!base::Base64Decode(seed_base64, &seed)) {
-    return {};
-  }
-
-  const std::vector<uint8_t> derived_key = GetHKDF(seed);
-  KeyPairInfo key_pair = GenerateSignKeyPairFromSeed(derived_key);
-
-  return key_pair.secret_key;
 }
 
 std::vector<uint8_t> GenerateNonce() {

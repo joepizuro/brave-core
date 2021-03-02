@@ -8,11 +8,18 @@
 #include "base/base64.h"
 #include "bat/ads/internal/security/key_pair_info.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "tweetnacl.h"  // NOLINT
+
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
 namespace ads {
 namespace security {
+
+namespace {
+  const size_t kCryptoBoxPublicKeyBytes = crypto_box_PUBLICKEYBYTES;
+  const size_t kCryptoBoxSecretKeyBytes = crypto_box_SECRETKEYBYTES;
+}  // namespace
 
 TEST(BatAdsSecurityCryptoUtilsTest, Sign) {
   // Arrange
@@ -171,6 +178,30 @@ TEST(BatAdsSecurityCryptoUtilsTest, Sha256WithEmptyString) {
 
   // Assert
   EXPECT_TRUE(sha256.empty());
+}
+
+TEST(BatAdsSecurityCryptoUtilsTest, GenerateSignKeyPair) {
+  // Arrange
+
+  // Act
+  KeyPairInfo key_pair = GenerateSignKeyPair();
+
+  // Assert
+  ASSERT_EQ(kCryptoBoxPublicKeyBytes, key_pair.public_key.size());
+  ASSERT_EQ(kCryptoBoxSecretKeyBytes, key_pair.secret_key.size());
+  EXPECT_TRUE(key_pair.IsValid());
+}
+
+TEST(BatAdsSecurityCryptoUtilsTest, GenerateBoxKeyPair) {
+  // Arrange
+
+  // Act
+  KeyPairInfo key_pair = GenerateBoxKeyPair();
+
+  // Assert
+  ASSERT_EQ(kCryptoBoxPublicKeyBytes, key_pair.public_key.size());
+  ASSERT_EQ(kCryptoBoxSecretKeyBytes, key_pair.secret_key.size());
+  EXPECT_TRUE(key_pair.IsValid());
 }
 
 TEST(BatAdsSecurityCryptoUtilsTest, Encrypt) {

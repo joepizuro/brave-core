@@ -23,11 +23,9 @@ std::string Sign(const std::map<std::string, std::string>& headers,
 
 std::vector<uint8_t> Sha256Hash(const std::string& value);
 
-KeyPairInfo GenerateSignKeyPairFromSeed(const std::vector<uint8_t>& seed);
+KeyPairInfo GenerateSignKeyPair();
 
 KeyPairInfo GenerateBoxKeyPair();
-
-std::vector<uint8_t> GenerateSecretKeyFromSeed(const std::string& seed_base64);
 
 std::vector<uint8_t> GenerateNonce();
 

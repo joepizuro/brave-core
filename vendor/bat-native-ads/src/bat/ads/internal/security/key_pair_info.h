@@ -21,6 +21,8 @@ struct KeyPairInfo {
   bool operator==(const KeyPairInfo& rhs) const;
   bool operator!=(const KeyPairInfo& rhs) const;
 
+  bool IsValid() const;
+
   std::vector<uint8_t> public_key;
   std::vector<uint8_t> secret_key;
 };

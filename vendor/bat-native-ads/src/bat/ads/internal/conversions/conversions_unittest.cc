@@ -590,8 +590,4 @@ TEST_F(BatAdsConversionsTest, ConvertAdForRedirectChainUrl) {
       });
 }
 
-// TODO(Moritz Haller): create test with verifiable conversion id
-// const std::string html = "<html><head><meta name=\"ad-conversion-id\"
-// content=\"smartbrownfoxes42\"></head></html>";
-
 }  // namespace ads

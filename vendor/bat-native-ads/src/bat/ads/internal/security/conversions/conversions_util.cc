@@ -17,18 +17,19 @@
 #include "bat/ads/internal/security/crypto_util.h"
 #include "bat/ads/internal/security/key_pair_info.h"
 #include "bat/ads/internal/string_util.h"
+#include "tweetnacl.h"  // NOLINT
 
 namespace ads {
 namespace security {
 
 namespace {
 
-const char kAlgorithm[] = "x25519-xsalsa20-poly1305";
-const size_t kCryptoBoxZeroBytes = 16;       // crypto_box_BOXZEROBYTES
-const size_t kCryptoBoxPublicKeyBytes = 32;  // crypto_box_PUBLICKEYBYTES
+const char kAlgorithm[] = "crypto_box_curve25519xsalsa20poly1305";
+const size_t kCryptoBoxZeroBytes = crypto_box_BOXZEROBYTES;
+const size_t kCryptoBoxPublicKeyBytes = crypto_box_PUBLICKEYBYTES;
 const size_t kVacCipherTextLength = 32;
 const size_t kVacMessageMaxLength = 30;
-const size_t kVacMessageMinLength = 15;
+const size_t kVacMessageMinLength = 1;
 
 std::vector<uint8_t> Base64ToBytes(const std::string& value_base64) {
   std::string value_as_string;
@@ -45,7 +46,7 @@ std::vector<uint8_t> Base64ToBytes(const std::string& value_base64) {
 
 }  // namespace
 
-base::Optional<VerifiableConversionEnvelopeInfo> EncryptAndEncode(
+base::Optional<VerifiableConversionEnvelopeInfo> EnvelopeSeal(
     const VerifiableConversionInfo& verifiable_conversion) {
   const std::string message = verifiable_conversion.id;
   const std::string public_key_base64 = verifiable_conversion.public_key;
@@ -70,13 +71,17 @@ base::Optional<VerifiableConversionEnvelopeInfo> EncryptAndEncode(
   }
 
   const KeyPairInfo ephemeral_key_pair = GenerateBoxKeyPair();
+  if (!ephemeral_key_pair.IsValid()) {
+    return base::nullopt;
+  }
 
   const std::vector<uint8_t> nonce = GenerateNonce();
 
   const std::vector<uint8_t> padded_ciphertext =
       Encrypt(plaintext, nonce, public_key, ephemeral_key_pair.secret_key);
 
-  // The receiving TweetNaCl.js client does not require padding
+  // The first 16 bytes of the resulting ciphertext is left as padding by the
+  // C API and should be removed before sending out extraneously.
   const std::vector<uint8_t> ciphertext(
       padded_ciphertext.begin() + kCryptoBoxZeroBytes, padded_ciphertext.end());
 
@@ -92,30 +97,6 @@ base::Optional<VerifiableConversionEnvelopeInfo> EncryptAndEncode(
   }
 
   return envelope;
-}
-
-std::string DecodeAndDecrypt(const VerifiableConversionEnvelopeInfo envelope,
-                             const std::string& advertiser_secret_key_base64) {
-  std::string message;
-  if (!envelope.IsValid()) {
-    return message;
-  }
-
-  std::vector<uint8_t> advertiser_secret_key =
-      Base64ToBytes(advertiser_secret_key_base64);
-  std::vector<uint8_t> nonce = Base64ToBytes(envelope.nonce);
-  std::vector<uint8_t> ciphertext = Base64ToBytes(envelope.ciphertext);
-  std::vector<uint8_t> ephemeral_public_key =
-      Base64ToBytes(envelope.ephemeral_public_key);
-
-  // API requires 16 leading zero-padding bytes
-  ciphertext.insert(ciphertext.begin(), kCryptoBoxZeroBytes, 0);
-
-  std::vector<uint8_t> plaintext =
-      Decrypt(ciphertext, nonce, ephemeral_public_key, advertiser_secret_key);
-  message = (const char*)&plaintext.front();
-
-  return message;
 }
 
 }  // namespace security

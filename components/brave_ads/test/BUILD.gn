@@ -158,6 +158,7 @@ source_set("brave_ads_unit_tests") {
       "//brave/vendor/bat-native-ads",
       "//brave/vendor/bat-native-ledger",
       "//brave/vendor/bat-native-rapidjson",
+      "//brave/vendor/bat-native-tweetnacl:tweetnacl",
       "//brave/vendor/bat-native-usermodel",
       "//chrome/browser:browser",
       "//components/prefs:prefs",

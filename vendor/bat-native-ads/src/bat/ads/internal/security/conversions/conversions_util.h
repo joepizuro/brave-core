@@ -18,13 +18,8 @@ namespace security {
 
 struct VerifiableConversionEnvelopeInfo;
 
-base::Optional<VerifiableConversionEnvelopeInfo> EncryptAndEncode(
+base::Optional<VerifiableConversionEnvelopeInfo> EnvelopeSeal(
     const VerifiableConversionInfo& verifiable_conversion);
-
-// TODO(Moritz Haller): base optional
-std::string DecodeAndDecrypt(
-    const VerifiableConversionEnvelopeInfo verifiable_conversion_envelope,
-    const std::string& advertiser_secret_key_base64);
 
 }  // namespace security
 }  // namespace ads

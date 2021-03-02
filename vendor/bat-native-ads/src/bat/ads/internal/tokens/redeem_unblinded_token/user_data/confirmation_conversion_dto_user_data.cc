@@ -31,7 +31,7 @@ base::Optional<security::VerifiableConversionEnvelopeInfo> GetEnvelope(
     return base::nullopt;
   }
 
-  return security::EncryptAndEncode(verifiable_conversion);
+  return security::EnvelopeSeal(verifiable_conversion);
 }
 
 }  // namespace
