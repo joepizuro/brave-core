@@ -11,7 +11,7 @@
 #include "bat/ads/internal/ml/data/text_data.h"
 #include "bat/ads/internal/ml/data/vector_data.h"
 #include "bat/ads/internal/ml/transformation/hash_vectorizer.h"
-#include "bat/ads/internal/ml/transformation/hashed_ngrams.h"
+#include "bat/ads/internal/ml/transformation/hashed_ngrams_transformation.h"
 
 namespace ads {
 namespace ml {
@@ -37,7 +37,7 @@ HashedNGrams::HashedNGrams(int bucket_count, const std::vector<int>& subgrams)
 }
 
 std::unique_ptr<Data> HashedNGrams::Apply(
-    const std::unique_ptr<Data>& input_data) {
+    const std::unique_ptr<Data>& input_data) const {
   if (input_data->GetType() != DataType::TEXT_DATA) {
     return std::make_unique<Data>(VectorData(0, std::map<unsigned, double>()));
   }

@@ -3,13 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include <algorithm>
 #include <memory>
 #include <string>
 
 #include "base/strings/string_util.h"
 #include "bat/ads/internal/ml/data/text_data.h"
-#include "bat/ads/internal/ml/transformation/lowercase.h"
+#include "bat/ads/internal/ml/transformation/lowercase_transformation.h"
 
 namespace ads {
 namespace ml {
@@ -20,7 +19,7 @@ Lowercase::Lowercase() : Transformation(TransformationType::LOWERCASE) {}
 Lowercase::~Lowercase() = default;
 
 std::unique_ptr<Data> Lowercase::Apply(
-    const std::unique_ptr<Data>& input_data) {
+    const std::unique_ptr<Data>& input_data) const {
   if (input_data->GetType() != DataType::TEXT_DATA) {
     return std::make_unique<Data>(TextData(""));
   }

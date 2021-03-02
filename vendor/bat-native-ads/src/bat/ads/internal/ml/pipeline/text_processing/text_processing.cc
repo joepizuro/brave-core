@@ -14,9 +14,9 @@
 #include "bat/ads/internal/ml/pipeline/pipeline_info.h"
 #include "bat/ads/internal/ml/pipeline/pipeline_util.h"
 #include "bat/ads/internal/ml/pipeline/text_processing/text_processing.h"
-#include "bat/ads/internal/ml/transformation/hashed_ngrams.h"
-#include "bat/ads/internal/ml/transformation/lowercase.h"
-#include "bat/ads/internal/ml/transformation/normalization.h"
+#include "bat/ads/internal/ml/transformation/hashed_ngrams_transformation.h"
+#include "bat/ads/internal/ml/transformation/lowercase_transformation.h"
+#include "bat/ads/internal/ml/transformation/normalization_transformation.h"
 #include "bat/ads/internal/ml/transformation/transformation.h"
 
 namespace ads {

@@ -3,13 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include <algorithm>
 #include <map>
 #include <memory>
 #include <string>
 
 #include "bat/ads/internal/ml/data/vector_data.h"
-#include "bat/ads/internal/ml/transformation/normalization.h"
+#include "bat/ads/internal/ml/transformation/normalization_transformation.h"
 
 namespace ads {
 namespace ml {
@@ -21,7 +20,7 @@ Normalization::Normalization()
 Normalization::~Normalization() = default;
 
 std::unique_ptr<Data> Normalization::Apply(
-    const std::unique_ptr<Data>& input_data) {
+    const std::unique_ptr<Data>& input_data) const {
   if (input_data->GetType() != DataType::VECTOR_DATA) {
     return std::make_unique<VectorData>(
         VectorData(0, std::map<unsigned, double>()));

@@ -5,12 +5,6 @@
 
 #include "bat/ads/internal/ml/transformation/transformation.h"
 
-#include <algorithm>
-#include <cmath>
-#include <codecvt>
-#include <map>
-#include <string>
-
 namespace ads {
 namespace ml {
 namespace transformation {

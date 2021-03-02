@@ -3,16 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include <stddef.h>
 #include <cmath>
 #include <utility>
 
-#include "bat/ads/internal/ml/transformation/hash_vectorizer.h"
-
 #include "base/json/json_reader.h"
-#include "base/strings/utf_string_conversions.h"
-#include "base/values.h"
 
+#include "bat/ads/internal/ml/transformation/hash_vectorizer.h"
 #include "bat/ads/internal/unittest_base.h"
 #include "bat/ads/internal/unittest_util.h"
 

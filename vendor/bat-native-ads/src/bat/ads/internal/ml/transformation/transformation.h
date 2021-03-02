@@ -7,8 +7,6 @@
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ML_TRANSFORMATION_TRANSFORMATION_H_
 
 #include <memory>
-#include <string>
-#include <vector>
 
 #include "bat/ads/internal/ml/data/data.h"
 
@@ -33,7 +31,7 @@ class Transformation {
   TransformationType GetType() const;
 
   virtual std::unique_ptr<Data> Apply(
-      const std::unique_ptr<Data>& input_data) = 0;
+      const std::unique_ptr<Data>& input_data) const = 0;
 
  protected:
   const TransformationType type_;

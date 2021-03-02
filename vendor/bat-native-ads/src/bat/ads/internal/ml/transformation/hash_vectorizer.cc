@@ -53,7 +53,7 @@ int HashVectorizer::GetBucketCount() const {
   return bucket_count_;
 }
 
-uint32_t HashVectorizer::GetHash(const std::string& substring) {
+uint32_t HashVectorizer::GetHash(const std::string& substring) const {
   const char* u8str = substring.c_str();
   auto rtn = crc32(crc32(0L, Z_NULL, 0),
                    reinterpret_cast<const uint8_t*>(u8str), strlen(u8str));
@@ -61,7 +61,7 @@ uint32_t HashVectorizer::GetHash(const std::string& substring) {
 }
 
 std::map<uint32_t, double> HashVectorizer::GetFrequencies(
-    const std::string& html) {
+    const std::string& html) const {
   std::string data = html;
   std::map<uint32_t, double> frequencies;
   if (data.length() > kMaximumHtmlLengthToClassify) {

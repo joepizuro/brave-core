@@ -11,9 +11,9 @@
 #include "bat/ads/internal/ml/data/vector_data.h"
 #include "bat/ads/internal/ml/data/vector_data_aliases.h"
 #include "bat/ads/internal/ml/ml_aliases.h"
-#include "bat/ads/internal/ml/transformation/hashed_ngrams.h"
-#include "bat/ads/internal/ml/transformation/lowercase.h"
-#include "bat/ads/internal/ml/transformation/normalization.h"
+#include "bat/ads/internal/ml/transformation/hashed_ngrams_transformation.h"
+#include "bat/ads/internal/ml/transformation/lowercase_transformation.h"
+#include "bat/ads/internal/ml/transformation/normalization_transformation.h"
 
 #include "bat/ads/internal/unittest_base.h"
 #include "bat/ads/internal/unittest_util.h"

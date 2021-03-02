@@ -7,7 +7,7 @@
 #include <string>
 
 #include "bat/ads/internal/ml/data/text_data.h"
-#include "bat/ads/internal/ml/transformation/lowercase.h"
+#include "bat/ads/internal/ml/transformation/lowercase_transformation.h"
 
 #include "bat/ads/internal/unittest_base.h"
 #include "bat/ads/internal/unittest_util.h"
