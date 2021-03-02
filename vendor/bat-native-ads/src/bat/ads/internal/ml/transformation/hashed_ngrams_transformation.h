@@ -24,7 +24,7 @@ class HashedNGrams : public Transformation {
 
   HashedNGrams(const HashedNGrams& hashed_ngrams);
 
-  HashedNGrams(int bucket_count, const std::vector<int>& subgrams);
+  HashedNGrams(const int bucket_count, const std::vector<int>& subgrams);
 
   ~HashedNGrams() override;
 

@@ -30,7 +30,8 @@ HashedNGrams::HashedNGrams(const HashedNGrams& hashed_ngrams)
 
 HashedNGrams::~HashedNGrams() = default;
 
-HashedNGrams::HashedNGrams(int bucket_count, const std::vector<int>& subgrams)
+HashedNGrams::HashedNGrams(const int bucket_count,
+                           const std::vector<int>& subgrams)
     : Transformation(TransformationType::HASHED_NGRAMS) {
   hash_vectorizer =
       std::make_unique<HashVectorizer>(HashVectorizer(bucket_count, subgrams));
