@@ -19,6 +19,8 @@ class TextData : public Data {
 
   TextData(const TextData& text_data);
 
+  // Explicit copy assignment operator is required because the class
+  // inherits const member type_ that cannot be copied by default
   TextData& operator=(const TextData& text_data);
 
   explicit TextData(const std::string& text);

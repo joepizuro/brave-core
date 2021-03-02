@@ -24,6 +24,8 @@ class VectorData : public Data {
 
   explicit VectorData(const std::vector<double>& data);
 
+  // Explicit copy assignment operator is required because the class
+  // inherits const member type_ that cannot be copied by default
   VectorData& operator=(const VectorData& vector_data);
 
   VectorData(const int dimension_count, const std::map<uint32_t, double>& data);

@@ -34,6 +34,8 @@ PredictionMap Softmax(const PredictionMap& predictions) {
   return softmax_predictions;
 }
 
+// The function should always return unique_ptr to transformation copy
+// NOTREACHED() is used to protect from handling unknown transformation types
 TransformationPtr GetTransformationCopy(
     const TransformationPtr& transformation_ptr) {
   if (transformation_ptr->GetType() ==
